@@ -36,7 +36,7 @@ struct ContentView: View {
     @AppStorage("keepScreenOn") private var keepScreenOn: Bool = false
     
     //
-    private let headphoneTracker: HeadphoneTracker = HeadphoneTracker()
+    private let headphoneMotionTracker: HeadphoneMotionTracker = HeadphoneMotionTracker()
     private let webSocketController: WebSocketTaskController = WebSocketTaskController()
     
     var body: some View {
@@ -147,7 +147,7 @@ struct ContentView: View {
         }
         .padding()
         .onAppear {
-            if headphoneTracker.isMotionAvailable {
+            if headphoneMotionTracker.isMotionAvailable {
                 deviceSupportIconName = "checkmark.circle.fill"
                 deviceSupportIconColor = .green
                 deviceSupportText = "Supported"
@@ -157,7 +157,7 @@ struct ContentView: View {
                 deviceSupportText = "Not Supported"
             }
             
-            switch headphoneTracker.authorizationStatus {
+            switch headphoneMotionTracker.authorizationStatus {
             case .authorized:
                 appPermissionIconName = "checkmark.circle.fill"
                 appPermissionIconColor = .green
@@ -180,7 +180,7 @@ struct ContentView: View {
                 appPermissionText = "Unknown"
             }
             
-            headphoneTracker.stateHandler = { (newState, reason) in
+            headphoneMotionTracker.stateHandler = { (newState, reason) in
                 switch newState {
                 case .connected:
                     headphoneStatusIconColor = .green
@@ -191,7 +191,7 @@ struct ContentView: View {
                 }
             }
             
-            headphoneTracker.motionHandler = { (motion) in
+            headphoneMotionTracker.motionHandler = { (motion) in
                 eulerAnglesText = String(format: "(%+.2f, %+.2f, %+.2f)",
                                          motion.attitude.roll, motion.attitude.pitch, motion.attitude.yaw)
                 angularVelocitiesText = String(format: "(%+.2f, %+.2f, %+.2f)",
