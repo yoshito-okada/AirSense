@@ -8,14 +8,23 @@
 import Foundation
 import CoreMotion
 
-typealias DeviceMotionTrackerMotionHandler = (CMDeviceMotion) -> Void
-typealias DeviceMotionTrackerErrorHandler = (Error) -> Void
-
 class DeviceMotionTracker {
-    var motionHandler: DeviceMotionTrackerMotionHandler?
-    var errorHandler: DeviceMotionTrackerErrorHandler?
+    
+    // MARK: - Typealiases
+    
+    typealias MotionHandler = (CMDeviceMotion) -> Void
+    typealias ErrorHandler = (Error) -> Void
+    
+    // MARK: - Properties
+
+    var motionHandler: MotionHandler?
+    var errorHandler: ErrorHandler?
+    
+    // MARK: - Private properties
     
     private let motionManager = CMMotionManager()
+    
+    // MARK: - Initializers
     
     init() {
         motionManager.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical, to: .main) {
