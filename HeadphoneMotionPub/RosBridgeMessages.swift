@@ -8,7 +8,7 @@
 import Foundation
 import CoreMotion
 
-// -MARK: Objects corresponding to ROS messages
+// MARK: - Objects corresponding to ROS messages
 
 // Time
 struct RosTime: Encodable {
@@ -97,7 +97,7 @@ struct RosImu: Encodable {
     let linear_acceleration_covariance: [Double] = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 }
 
-// -MARK: Objects corresponding to rosbridge requests
+// MARK: - Objects corresponding to rosbridge requests
 
 struct RosBridgeAdvertiseRequest: Encodable {
     let op: String = "advertise"
@@ -116,7 +116,7 @@ struct RosBridgePublishRequest<Msg: Encodable>: Encodable {
     let msg: Msg
 }
 
-// -MARK: encoding utility
+// MARK: - Encoding utility
 
 func encodeForWebSocket(object: Encodable) -> URLSessionWebSocketTask.Message? {
     let encoder = JSONEncoder()
