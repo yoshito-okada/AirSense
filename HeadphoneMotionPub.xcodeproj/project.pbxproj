@@ -1,0 +1,368 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE10C8EE29E6E1A500254C07 /* DeviceMotionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */; };
+		CE37A68529D57DA300262D9E /* HeadphoneMotionPubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */; };
+		CE37A68729D57DA300262D9E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE37A68629D57DA300262D9E /* ContentView.swift */; };
+		CE37A68929D57DA500262D9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE37A68829D57DA500262D9E /* Assets.xcassets */; };
+		CE37A68C29D57DA500262D9E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE37A68B29D57DA500262D9E /* Preview Assets.xcassets */; };
+		CE528F0129E2A8A3002A2A3F /* WebSocketTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE528F0029E2A8A3002A2A3F /* WebSocketTaskController.swift */; };
+		CE98B9D629E4F1700026C631 /* RosBridgeMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98B9D529E4F1700026C631 /* RosBridgeMessages.swift */; };
+		CEE057C229D5B6EA002D7585 /* RosPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE057C129D5B6EA002D7585 /* RosPublisher.swift */; };
+		CEE057C429D5B728002D7585 /* HeadphoneTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE057C329D5B728002D7585 /* HeadphoneTracker.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMotionTracker.swift; sourceTree = "<group>"; };
+		CE37A68129D57DA300262D9E /* HeadphoneMotionPub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeadphoneMotionPub.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphoneMotionPubApp.swift; sourceTree = "<group>"; };
+		CE37A68629D57DA300262D9E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CE37A68829D57DA500262D9E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CE37A68B29D57DA500262D9E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CE528F0029E2A8A3002A2A3F /* WebSocketTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketTaskController.swift; sourceTree = "<group>"; };
+		CE98B9D529E4F1700026C631 /* RosBridgeMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosBridgeMessages.swift; sourceTree = "<group>"; };
+		CEE057C129D5B6EA002D7585 /* RosPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosPublisher.swift; sourceTree = "<group>"; };
+		CEE057C329D5B728002D7585 /* HeadphoneTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphoneTracker.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CE37A67E29D57DA300262D9E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CE37A67829D57DA200262D9E = {
+			isa = PBXGroup;
+			children = (
+				CE37A68329D57DA300262D9E /* HeadphoneMotionPub */,
+				CE37A68229D57DA300262D9E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CE37A68229D57DA300262D9E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CE37A68129D57DA300262D9E /* HeadphoneMotionPub.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CE37A68329D57DA300262D9E /* HeadphoneMotionPub */ = {
+			isa = PBXGroup;
+			children = (
+				CE37A68629D57DA300262D9E /* ContentView.swift */,
+				CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */,
+				CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */,
+				CEE057C329D5B728002D7585 /* HeadphoneTracker.swift */,
+				CE98B9D529E4F1700026C631 /* RosBridgeMessages.swift */,
+				CEE057C129D5B6EA002D7585 /* RosPublisher.swift */,
+				CE528F0029E2A8A3002A2A3F /* WebSocketTaskController.swift */,
+				CE37A68829D57DA500262D9E /* Assets.xcassets */,
+				CE37A68A29D57DA500262D9E /* Preview Content */,
+			);
+			path = HeadphoneMotionPub;
+			sourceTree = "<group>";
+		};
+		CE37A68A29D57DA500262D9E /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				CE37A68B29D57DA500262D9E /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CE37A68029D57DA300262D9E /* HeadphoneMotionPub */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE37A68F29D57DA500262D9E /* Build configuration list for PBXNativeTarget "HeadphoneMotionPub" */;
+			buildPhases = (
+				CE37A67D29D57DA300262D9E /* Sources */,
+				CE37A67E29D57DA300262D9E /* Frameworks */,
+				CE37A67F29D57DA300262D9E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeadphoneMotionPub;
+			productName = HeadphoneMotionPub;
+			productReference = CE37A68129D57DA300262D9E /* HeadphoneMotionPub.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CE37A67929D57DA200262D9E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					CE37A68029D57DA300262D9E = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = CE37A67C29D57DA200262D9E /* Build configuration list for PBXProject "HeadphoneMotionPub" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CE37A67829D57DA200262D9E;
+			productRefGroup = CE37A68229D57DA300262D9E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CE37A68029D57DA300262D9E /* HeadphoneMotionPub */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CE37A67F29D57DA300262D9E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE37A68C29D57DA500262D9E /* Preview Assets.xcassets in Resources */,
+				CE37A68929D57DA500262D9E /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CE37A67D29D57DA300262D9E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE37A68729D57DA300262D9E /* ContentView.swift in Sources */,
+				CE10C8EE29E6E1A500254C07 /* DeviceMotionTracker.swift in Sources */,
+				CEE057C429D5B728002D7585 /* HeadphoneTracker.swift in Sources */,
+				CE98B9D629E4F1700026C631 /* RosBridgeMessages.swift in Sources */,
+				CEE057C229D5B6EA002D7585 /* RosPublisher.swift in Sources */,
+				CE37A68529D57DA300262D9E /* HeadphoneMotionPubApp.swift in Sources */,
+				CE528F0129E2A8A3002A2A3F /* WebSocketTaskController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		CE37A68D29D57DA500262D9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CE37A68E29D57DA500262D9E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CE37A69029D57DA500262D9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HeadphoneMotionPub/Preview Content\"";
+				DEVELOPMENT_TEAM = 6946U6BH66;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMotionUsageDescription = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoshito-okada.HeadphoneMotionPub";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CE37A69129D57DA500262D9E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HeadphoneMotionPub/Preview Content\"";
+				DEVELOPMENT_TEAM = 6946U6BH66;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMotionUsageDescription = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoshito-okada.HeadphoneMotionPub";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE37A67C29D57DA200262D9E /* Build configuration list for PBXProject "HeadphoneMotionPub" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE37A68D29D57DA500262D9E /* Debug */,
+				CE37A68E29D57DA500262D9E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE37A68F29D57DA500262D9E /* Build configuration list for PBXNativeTarget "HeadphoneMotionPub" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE37A69029D57DA500262D9E /* Debug */,
+				CE37A69129D57DA500262D9E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CE37A67929D57DA200262D9E /* Project object */;
+}
