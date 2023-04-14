@@ -14,6 +14,27 @@ class HeadphoneMotionTracker {
     
     // MARK: - Enums, typealiases, classes
     
+    // fatal errors which may be thrown from initializer
+    enum FatalError: LocalizedError {
+        case motionNotSupported
+        case permissionDenied
+        case permissionNotDetermined
+        case permissionRestricted
+        
+        var errorDescription: String? {
+            switch self {
+            case .motionNotSupported:
+                return "Headphone motion tracking is not supported on this device"
+            case .permissionDenied:
+                return "Permission to track headphone motion has been denied"
+            case .permissionNotDetermined:
+                return "Permission to track headphone motion is not determined"
+            case .permissionRestricted:
+                return "Permission to track headphone motion is restricted"
+            }
+        }
+    }
+    
     // general lifecycle of a headphone
     enum State: CustomStringConvertible{
         case disconnected
@@ -74,12 +95,6 @@ class HeadphoneMotionTracker {
     }
     var motionHandler: MotionHandler?
     var errorHandler: ErrorHandler?
-    var isMotionAvailable: Bool {
-        return motionManager.isDeviceMotionAvailable
-    }
-    var authorizationStatus: CMAuthorizationStatus {
-        return CMHeadphoneMotionManager.authorizationStatus()
-    }
     var state: State {
         return delegate.state
     }
@@ -91,7 +106,21 @@ class HeadphoneMotionTracker {
     
     // MARK: - Initializers
     
-    init() {
+    init() throws {
+        guard motionManager.isDeviceMotionAvailable else {
+            throw FatalError.motionNotSupported
+        }
+        switch CMHeadphoneMotionManager.authorizationStatus() {
+        case .denied:
+            throw FatalError.permissionDenied
+        case .notDetermined:
+            throw FatalError.permissionNotDetermined
+        case .restricted:
+            throw FatalError.permissionRestricted
+        default:
+            break
+        }
+        
         motionManager.delegate = delegate
         
         motionManager.startDeviceMotionUpdates(to: .main){

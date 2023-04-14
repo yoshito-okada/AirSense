@@ -10,7 +10,19 @@ import CoreMotion
 
 class DeviceMotionTracker {
     
-    // MARK: - Typealiases
+    // MARK: - Enums, typealiases
+    
+    // fatal errors which may be thrown from initializer
+    enum FatalError: LocalizedError {
+        case motionNotSupported
+        
+        var errorDescription: String? {
+            switch self {
+            case .motionNotSupported:
+                return "Self motion tracking is not supported on this device"
+            }
+        }
+    }
     
     typealias MotionHandler = (CMDeviceMotion) -> Void
     typealias ErrorHandler = (Error) -> Void
@@ -26,7 +38,11 @@ class DeviceMotionTracker {
     
     // MARK: - Initializers
     
-    init() {
+    init() throws {
+        guard motionManager.isDeviceMotionAvailable else {
+            throw FatalError.motionNotSupported
+        }
+        
         motionManager.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical, to: .main) {
             [weak self] (maybeMotion, maybeError) in
             if let motion = maybeMotion {

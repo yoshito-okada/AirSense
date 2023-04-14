@@ -9,64 +9,37 @@ import SwiftUI
 import CoreMotion
 
 struct ContentView: View {
-    //
-    @State private var deviceSupportIconName: String = "questionmark.circle.fill"
-    @State private var deviceSupportIconColor: Color = .gray
-    @State private var deviceSupportText: String = "Unknown"
-    //
-    @State private var appPermissionIconName: String = "questionmark.circle.fill"
-    @State private var appPermissionIconColor: Color = .gray
-    @State private var appPermissionText: String = "Unknown"
-    //
+
+    // MARK: - private state properties
+
     @State private var headphoneStatusIconName: String = "headphones"
     @State private var headphoneStatusIconColor: Color = .red
     @State private var headphoneStatusText: String = "Disconnected"
-    //
+    
     @State private var eulerAnglesText: String = "N/A"
     @State private var angularVelocitiesText: String = "N/A"
     @State private var linearAccelerationsText: String = "N/A"
-    //
+    
     @State private var webSocketStatusIconName: String = "globe"
     @State private var webSocketStatusIconColor: Color = .red
     @State private var webSocketStatusText: String = "Disconnected"
     @AppStorage("webSocketUrlText") private var webSocketUrlText: String = "ws://192.168.0.1:9090"
     @AppStorage("rosTopicName") private var rosTopicName: String = "/imu"
     @AppStorage("rosFrameId") private var rosFrameId: String = "imu"
-    //
+    
     @AppStorage("keepScreenOn") private var keepScreenOn: Bool = false
     
-    //
-    private let headphoneMotionTracker: HeadphoneMotionTracker = HeadphoneMotionTracker()
-    private let webSocketController: WebSocketTaskController = WebSocketTaskController()
+    // MARK: - private backend objects
+    
+    private let headphoneMotionTracker: HeadphoneMotionTracker?
+    private let deviceMotionTracker: DeviceMotionTracker?
+    private let webSocketTaskController: WebSocketTaskController?
+    private var fatalErrors: [Error]
+    
+    // MARK: - body
     
     var body: some View {
         VStack(alignment: .leading) {
-            
-            // iOS device's support for headphone motion tracking
-            Group {
-                Text("Device Tracking Support")
-                    .bold()
-                HStack {
-                    Image(systemName: deviceSupportIconName)
-                        .foregroundColor(deviceSupportIconColor)
-                    Text(deviceSupportText)
-                        .foregroundColor(.gray)
-                }
-                .padding(.bottom)
-            }
-            
-            // app permission for headphone motion tracking
-            Group {
-                Text("App Tracking Permission")
-                    .bold()
-                HStack {
-                    Image(systemName: appPermissionIconName)
-                        .foregroundColor(appPermissionIconColor)
-                    Text(appPermissionText)
-                        .foregroundColor(.gray)
-                }
-                .padding(.bottom)
-            }
             
             // headphone status
             Group {
@@ -147,40 +120,7 @@ struct ContentView: View {
         }
         .padding()
         .onAppear {
-            if headphoneMotionTracker.isMotionAvailable {
-                deviceSupportIconName = "checkmark.circle.fill"
-                deviceSupportIconColor = .green
-                deviceSupportText = "Supported"
-            } else {
-                deviceSupportIconName = "xmark.circle.fill"
-                deviceSupportIconColor = .red
-                deviceSupportText = "Not Supported"
-            }
-            
-            switch headphoneMotionTracker.authorizationStatus {
-            case .authorized:
-                appPermissionIconName = "checkmark.circle.fill"
-                appPermissionIconColor = .green
-                appPermissionText = "Sufficient"
-            case .denied:
-                appPermissionIconName = "xmark.circle.fill"
-                appPermissionIconColor = .red
-                appPermissionText = "Insufficient (Denied)"
-            case .notDetermined:
-                appPermissionIconName = "xmark.circle.fill"
-                appPermissionIconColor = .red
-                appPermissionText = "Insufficient (Not Determined)"
-            case .restricted:
-                appPermissionIconName = "xmark.circle.fill"
-                appPermissionIconColor = .red
-                appPermissionText = "Insufficient (Restricted)"
-            default:
-                appPermissionIconName = "questionmark.circle.fill"
-                appPermissionIconColor = .gray
-                appPermissionText = "Unknown"
-            }
-            
-            headphoneMotionTracker.stateHandler = { (newState, reason) in
+            headphoneMotionTracker?.stateHandler = { (newState, reason) in
                 switch newState {
                 case .connected:
                     headphoneStatusIconColor = .green
@@ -191,7 +131,7 @@ struct ContentView: View {
                 }
             }
             
-            headphoneMotionTracker.motionHandler = { (motion) in
+            headphoneMotionTracker?.motionHandler = { (motion) in
                 eulerAnglesText = String(format: "(%+.2f, %+.2f, %+.2f)",
                                          motion.attitude.roll, motion.attitude.pitch, motion.attitude.yaw)
                 angularVelocitiesText = String(format: "(%+.2f, %+.2f, %+.2f)",
@@ -201,7 +141,7 @@ struct ContentView: View {
                 publishRosMessage(topicName: rosTopicName, frameId: rosFrameId, motion: motion)
             }
             
-            webSocketController.stateHandler = { (url, newState, reason) in
+            webSocketTaskController?.stateHandler = { (url, newState, reason) in
                 switch newState {
                 case .idle:
                     webSocketStatusIconColor = .gray
@@ -224,9 +164,31 @@ struct ContentView: View {
         }
     }
     
+    // MARK: - initializer
+    
+    init() {
+        // initialize backend objects by correcting fatal errors
+        fatalErrors = []
+        do {
+            headphoneMotionTracker = try HeadphoneMotionTracker()
+        } catch {
+            headphoneMotionTracker = nil
+            fatalErrors.append(error)
+        }
+        do {
+            deviceMotionTracker = try DeviceMotionTracker()
+        } catch {
+            deviceMotionTracker = nil
+            fatalErrors.append(error)
+        }
+        webSocketTaskController = WebSocketTaskController()
+    }
+    
+    // MARK: - private methods
+    
     private func updateWebSocketUrl(with string: String) {
         if let url = WebSocketURL(string: string) {
-            webSocketController.url = url
+            webSocketTaskController?.url = url
         }
     }
     
@@ -234,7 +196,7 @@ struct ContentView: View {
         // TODO: unadvertise the old topic before advertising the new topic
         let advertiseRequest = RosBridgeAdvertiseRequest(topic: topicName, type: "sensor_msgs/Imu")
         if let encodedRequest = encodeForWebSocket(object: advertiseRequest) {
-            webSocketController.send(encodedRequest)
+            webSocketTaskController?.send(encodedRequest)
         }
     }
     
@@ -249,7 +211,7 @@ struct ContentView: View {
                 angular_velocity: RosVector3(rotationRate: motion.rotationRate),
                 linear_acceleration: RosVector3(acceleration: motion.userAcceleration)))
         if let encodedRequest = encodeForWebSocket(object: publishRequest) {
-            webSocketController.send(encodedRequest)
+            webSocketTaskController?.send(encodedRequest)
         }
     }
 }
