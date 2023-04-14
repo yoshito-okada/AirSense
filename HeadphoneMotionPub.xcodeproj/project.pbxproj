@@ -13,7 +13,7 @@
 		CE37A68929D57DA500262D9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE37A68829D57DA500262D9E /* Assets.xcassets */; };
 		CE37A68C29D57DA500262D9E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE37A68B29D57DA500262D9E /* Preview Assets.xcassets */; };
 		CE528F0129E2A8A3002A2A3F /* WebSocketTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE528F0029E2A8A3002A2A3F /* WebSocketTaskController.swift */; };
-		CE98B9D629E4F1700026C631 /* RosBridgeMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98B9D529E4F1700026C631 /* RosBridgeMessages.swift */; };
+		CE98B9D629E4F1700026C631 /* RosBridgeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98B9D529E4F1700026C631 /* RosBridgeUtilities.swift */; };
 		CEE057C429D5B728002D7585 /* HeadphoneMotionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE057C329D5B728002D7585 /* HeadphoneMotionTracker.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +25,7 @@
 		CE37A68829D57DA500262D9E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE37A68B29D57DA500262D9E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CE528F0029E2A8A3002A2A3F /* WebSocketTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketTaskController.swift; sourceTree = "<group>"; };
-		CE98B9D529E4F1700026C631 /* RosBridgeMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosBridgeMessages.swift; sourceTree = "<group>"; };
+		CE98B9D529E4F1700026C631 /* RosBridgeUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosBridgeUtilities.swift; sourceTree = "<group>"; };
 		CEE057C329D5B728002D7585 /* HeadphoneMotionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphoneMotionTracker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,7 +63,7 @@
 				CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */,
 				CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */,
 				CEE057C329D5B728002D7585 /* HeadphoneMotionTracker.swift */,
-				CE98B9D529E4F1700026C631 /* RosBridgeMessages.swift */,
+				CE98B9D529E4F1700026C631 /* RosBridgeUtilities.swift */,
 				CE528F0029E2A8A3002A2A3F /* WebSocketTaskController.swift */,
 				CE37A68829D57DA500262D9E /* Assets.xcassets */,
 				CE37A68A29D57DA500262D9E /* Preview Content */,
@@ -152,7 +152,7 @@
 				CE37A68729D57DA300262D9E /* ContentView.swift in Sources */,
 				CE10C8EE29E6E1A500254C07 /* DeviceMotionTracker.swift in Sources */,
 				CEE057C429D5B728002D7585 /* HeadphoneMotionTracker.swift in Sources */,
-				CE98B9D629E4F1700026C631 /* RosBridgeMessages.swift in Sources */,
+				CE98B9D629E4F1700026C631 /* RosBridgeUtilities.swift in Sources */,
 				CE37A68529D57DA300262D9E /* HeadphoneMotionPubApp.swift in Sources */,
 				CE528F0129E2A8A3002A2A3F /* WebSocketTaskController.swift in Sources */,
 			);
