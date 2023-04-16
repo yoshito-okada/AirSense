@@ -116,7 +116,7 @@ class WebSocketTaskController: ObservableObject {
     
     // MARK: - Properties
     
-    @Published var state: State = .noTask
+    @Published private(set) var state: State = .noTask
 
     // MARK: - Private properties
     

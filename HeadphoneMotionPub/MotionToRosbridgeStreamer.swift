@@ -17,8 +17,8 @@ class MotionToRosbridgeStreamer: ObservableObject {
     
     // MARK: - Properties
     
-    let headphoneMotionTracker: HeadphoneMotionTracker = HeadphoneMotionTracker()
     let deviceMotionTracker: DeviceMotionTracker = DeviceMotionTracker()
+    let headphoneMotionTracker: HeadphoneMotionTracker = HeadphoneMotionTracker()
     let webSocketTaskController: WebSocketTaskController = WebSocketTaskController()
     
     var deviceMotionTopic: String = "" {

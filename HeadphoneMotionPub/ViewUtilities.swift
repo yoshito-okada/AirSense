@@ -60,7 +60,7 @@ struct MotionView: View {
 }
 
 struct PreferenceView: View {
-    @AppStorage("keepScreenOn") private var keepScreenOn: Bool = false
+    @AppStorage("keepScreenOn") private(set) var keepScreenOn: Bool = false
     
     var body: some View {
         Toggle("Keep Screen On", isOn: $keepScreenOn)
