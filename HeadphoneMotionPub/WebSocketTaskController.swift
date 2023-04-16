@@ -5,6 +5,7 @@
 //  Created by Yoshito Okada on 2023/04/09.
 //
 
+import Combine
 import Foundation
 
 // a wrapper around URL that only accepts standardized WebSocket URL
@@ -29,157 +30,105 @@ struct WebSocketURL: Equatable, CustomStringConvertible {
 
 // a wrapper of URLSessionWebSocketTask
 //   - automatically attempt connection on init, and disconnect on deinit
-//   - can change handlers to run when the WebSocket state changes
-class WebSocketTask {
+//   - publish connection state
+class WebSocketTask: NSObject, URLSessionWebSocketDelegate, ObservableObject {
     
-    // MARK: - Enums, typealiases
+    // MARK: - State definitions
     
-    // general lifecycle of WebSocket
-    enum State: CustomStringConvertible {
+    enum State {
         case idle
-        case connectionAttempting
-        case connected
-        case disconnected
-        
-        var description: String {
-            switch self {
-            case .idle:
-                return "Idle"
-            case .connectionAttempting:
-                return "Connection Attempting"
-            case .connected:
-                return "Connected"
-            case .disconnected:
-                return "Disconnected"
-            }
-        }
-    }
-
-// type of callback for handling WebSocket state
-typealias StateHandler = (/* url: */WebSocketURL, /* newState: */ State, /* reason: */ String) -> Void
-
-    // a delegate that notifies WebSocket states
-    class Delegate: NSObject, URLSessionWebSocketDelegate {
-        let url: WebSocketURL
-        private(set) var state: State = .idle
-        var stateHandler: StateHandler? {
-            didSet {
-                stateHandler?(url, state, "State handler changed (\(url))")
-            }
-        }
-        
-        init(url: WebSocketURL) {
-            self.url = url
-        }
-        
-        // MARK: - URLSessionTaskDelegate
-        
-        func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {
-            updateState(newState: .connectionAttempting, reason: "Task created (\(url))")
-        }
-        
-        func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError maybeError: Error?) {
-            let errorString = (maybeError != nil ? maybeError!.localizedDescription : "Success")
-            updateState(newState: .disconnected, reason: "Task completed (\(url), \(errorString))")
-        }
-        
-        // MARK: - URLSessionWebSocketTaskDelegate
-        
-        func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
-            updateState(newState: .connected, reason: "WebSocket connected (\(url))")
-        }
-        
-        func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
-            updateState(newState: .disconnected, reason: "WebSocket disconnected (\(url), \(closeCode))")
-        }
-        
-        //
-        
-        private func updateState(newState: State, reason: String) {
-            print("[WebSocket] \(state) -> \(newState): \(reason)")
-            state = newState
-            stateHandler?(url, newState, reason)
-        }
+        case attemptingConnection(url: WebSocketURL)
+        case connected(url: WebSocketURL)
+        // case connectionFailed(url: WebSocketUrl, error: Error)
+        case disconnected//(url: WebSocketUrl, closeCode: URLSessionWebSocketTask.CloseCode)
+        // case aborted(url: WebSocketUrl)
     }
 
     // MARK: - Properties
     
-    var url: WebSocketURL {
-        return delegate.url
-    }
-    var state: State {
-        return delegate.state
-    }
-    var stateHandler: StateHandler? {
-        get {
-            return delegate.stateHandler
-        }
-        set {
-            delegate.stateHandler = newValue
-        }
-    }
-    
+    let url: WebSocketURL
+    @Published private(set) var state: State
+
     // MARK: - Private properties
     
-    private let delegate: Delegate
-    private let task: URLSessionWebSocketTask
+    private var task: URLSessionWebSocketTask?
     
-    // MARK: - Methods
+    // MARK: - Initializers
     
     init(with url: WebSocketURL) {
-        //
-        self.delegate = Delegate(url: url)
-        self.task = URLSession(configuration: .default, delegate: self.delegate, delegateQueue: .main).webSocketTask(with: url.url)
-        
-        // call resume() to attempt connection
-        self.task.resume()
+        // init properties first
+        self.url = url
+        self.state = .idle
+        self.task = nil
+        // init the super classes. this makes using "self" possible
+        super.init()
+        // init and start task using "self" (we must call resume() to attempt connection)
+        self.task = URLSession(configuration: .default, delegate: self, delegateQueue: .main).webSocketTask(with: url.url)
+        self.task!.resume()
     }
     
     deinit {
         // complete the task on deinit
-        task.cancel()
+        task?.cancel()
     }
     
+    // MARK: - Methods
+    
     func send(_ message: URLSessionWebSocketTask.Message) {
-        task.send(message) { _ in }
+        task?.send(message) { _ in
+            // TODO: error handling
+        }
+    }
+    
+    // MARK: - URLSessionTaskDelegate
+    
+    func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {
+        state = .attemptingConnection(url: url)
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError maybeError: Error?) {
+        state = .disconnected
+    }
+    
+    // MARK: - URLSessionWebSocketTaskDelegate
+    
+    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
+        state = .connected(url: url)
+    }
+    
+    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
+        state = .disconnected
     }
 }
 
 // a controller of WebSocket task
 //   - owns 1 task at most
-//   - notifies the task states using a handler
-//   - changes the task when given a new URL
 //   - monitors the task and resumes if in the disconnected state
-class WebSocketTaskController {
+class WebSocketTaskController: ObservableObject {
+    
+    // MARK: - Enums
+    
+    enum State {
+        case noTask
+        case hasTask(taskState: WebSocketTask.State)
+    }
     
     // MARK: - Properties
     
-    var url: WebSocketURL? {
-        get {
-            return task?.url
-        }
-        set {
-            guard newValue != nil else { return }
-            changeTask(with: newValue!)
-        }
-    }
-    var stateHandler: WebSocketTask.StateHandler? {
-        didSet {
-            task?.stateHandler = stateHandler
-        }
-    }
+    @Published var state: State = .noTask
 
     // MARK: - Private properties
     
-    private var task: WebSocketTask?
     private let resumeTimer: DispatchSourceTimer
+    private var task: WebSocketTask?
+    private var stateSyncCancellable: AnyCancellable?
     
     // MARK: - Initializers
     
     init() {
-        // start repeating restartTask() every second
+        // start repeating restartTask() every 5 seconds
         self.resumeTimer = DispatchSource.makeTimerSource(queue: .main)
-        self.resumeTimer.schedule(deadline: .now(), repeating: .seconds(1))
+        self.resumeTimer.schedule(deadline: .now(), repeating: .seconds(5))
         self.resumeTimer.setEventHandler(handler: resumeTask)
         self.resumeTimer.resume()
     }
@@ -195,25 +144,41 @@ class WebSocketTaskController {
         task?.send(message)
     }
     
-    // MARK: - Private methods
-    
-    private func changeTask(with newUrl: WebSocketURL) {
-        // if the given url is not equal to the url of the current task,
-        // discard the current task and start a new task with the given url.
-        // replace the state handler with the new task before discarding the previous task
-        // to avoid notification congestion.
+    func changeTask(with newUrl: WebSocketURL) {
+        // do nothing if the given url is equal to the url of the current task
         guard task?.url != newUrl else { return }
-        task?.stateHandler = nil
+        // discard the current task
+        task = nil
+        stateSyncCancellable = nil
+        // start a new task with the given url
         task = WebSocketTask(with: newUrl)
-        task!.stateHandler = stateHandler
+        state = .hasTask(taskState: task!.state)
+        stateSyncCancellable = task!.$state.sink {
+            [weak weakSelf = self] newValue in
+            weakSelf?.state = .hasTask(taskState: newValue)
+        }
     }
+    
+    // MARK: - Private methods
     
     private func resumeTask() {
         // if the current task is in the disconnected state,
         // start a new task with the same url
-        guard task?.state == .disconnected else { return }
-        task!.stateHandler = nil
-        task = WebSocketTask(with: task!.url)
-        task!.stateHandler = stateHandler
+        switch task?.state {
+        case .disconnected:
+            // discard the current disconnected task after remembering the url
+            let url = task!.url
+            task = nil
+            stateSyncCancellable = nil
+            // start a new task with the same url
+            task = WebSocketTask(with: url)
+            state = .hasTask(taskState: task!.state)
+            stateSyncCancellable = task!.$state.sink {
+                [weak weakSelf = self] newValue in
+                weakSelf?.state = .hasTask(taskState: newValue)
+            }
+        default:
+            break
+        }
     }
 }

@@ -7,17 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A53678DD29EB658700BA161F /* MotionToRosbridgeStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53678DC29EB658700BA161F /* MotionToRosbridgeStreamer.swift */; };
+		A53678DF29EB663D00BA161F /* MotionToRosbridgeStreamerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53678DE29EB663D00BA161F /* MotionToRosbridgeStreamerView.swift */; };
+		A549A42629EADFAC008AE9A8 /* ViewUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A549A42529EADFAC008AE9A8 /* ViewUtilities.swift */; };
+		A549A42829EAE0E0008AE9A8 /* DeviceMotionTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A549A42729EAE0E0008AE9A8 /* DeviceMotionTrackerView.swift */; };
+		A549A42A29EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A549A42929EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift */; };
+		A549A42C29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A549A42B29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift */; };
 		CE10C8EE29E6E1A500254C07 /* DeviceMotionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */; };
 		CE37A68529D57DA300262D9E /* HeadphoneMotionPubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */; };
 		CE37A68729D57DA300262D9E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE37A68629D57DA300262D9E /* ContentView.swift */; };
 		CE37A68929D57DA500262D9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE37A68829D57DA500262D9E /* Assets.xcassets */; };
 		CE37A68C29D57DA500262D9E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE37A68B29D57DA500262D9E /* Preview Assets.xcassets */; };
 		CE528F0129E2A8A3002A2A3F /* WebSocketTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE528F0029E2A8A3002A2A3F /* WebSocketTaskController.swift */; };
-		CE98B9D629E4F1700026C631 /* RosBridgeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98B9D529E4F1700026C631 /* RosBridgeUtilities.swift */; };
+		CE98B9D629E4F1700026C631 /* RosbridgeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98B9D529E4F1700026C631 /* RosbridgeUtilities.swift */; };
 		CEE057C429D5B728002D7585 /* HeadphoneMotionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE057C329D5B728002D7585 /* HeadphoneMotionTracker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A53678DC29EB658700BA161F /* MotionToRosbridgeStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionToRosbridgeStreamer.swift; sourceTree = "<group>"; };
+		A53678DE29EB663D00BA161F /* MotionToRosbridgeStreamerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionToRosbridgeStreamerView.swift; sourceTree = "<group>"; };
+		A549A42529EADFAC008AE9A8 /* ViewUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtilities.swift; sourceTree = "<group>"; };
+		A549A42729EAE0E0008AE9A8 /* DeviceMotionTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMotionTrackerView.swift; sourceTree = "<group>"; };
+		A549A42929EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphoneMotionTrackerView.swift; sourceTree = "<group>"; };
+		A549A42B29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketTaskControllerView.swift; sourceTree = "<group>"; };
 		CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMotionTracker.swift; sourceTree = "<group>"; };
 		CE37A68129D57DA300262D9E /* HeadphoneMotionPub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeadphoneMotionPub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphoneMotionPubApp.swift; sourceTree = "<group>"; };
@@ -25,7 +37,7 @@
 		CE37A68829D57DA500262D9E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE37A68B29D57DA500262D9E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CE528F0029E2A8A3002A2A3F /* WebSocketTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketTaskController.swift; sourceTree = "<group>"; };
-		CE98B9D529E4F1700026C631 /* RosBridgeUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosBridgeUtilities.swift; sourceTree = "<group>"; };
+		CE98B9D529E4F1700026C631 /* RosbridgeUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosbridgeUtilities.swift; sourceTree = "<group>"; };
 		CEE057C329D5B728002D7585 /* HeadphoneMotionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphoneMotionTracker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,10 +73,16 @@
 			children = (
 				CE37A68629D57DA300262D9E /* ContentView.swift */,
 				CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */,
+				A549A42729EAE0E0008AE9A8 /* DeviceMotionTrackerView.swift */,
 				CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */,
 				CEE057C329D5B728002D7585 /* HeadphoneMotionTracker.swift */,
-				CE98B9D529E4F1700026C631 /* RosBridgeUtilities.swift */,
+				A549A42929EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift */,
+				A53678DC29EB658700BA161F /* MotionToRosbridgeStreamer.swift */,
+				A53678DE29EB663D00BA161F /* MotionToRosbridgeStreamerView.swift */,
+				CE98B9D529E4F1700026C631 /* RosbridgeUtilities.swift */,
+				A549A42529EADFAC008AE9A8 /* ViewUtilities.swift */,
 				CE528F0029E2A8A3002A2A3F /* WebSocketTaskController.swift */,
+				A549A42B29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift */,
 				CE37A68829D57DA500262D9E /* Assets.xcassets */,
 				CE37A68A29D57DA500262D9E /* Preview Content */,
 			);
@@ -151,10 +169,16 @@
 			files = (
 				CE37A68729D57DA300262D9E /* ContentView.swift in Sources */,
 				CE10C8EE29E6E1A500254C07 /* DeviceMotionTracker.swift in Sources */,
+				A53678DF29EB663D00BA161F /* MotionToRosbridgeStreamerView.swift in Sources */,
 				CEE057C429D5B728002D7585 /* HeadphoneMotionTracker.swift in Sources */,
-				CE98B9D629E4F1700026C631 /* RosBridgeUtilities.swift in Sources */,
+				A549A42629EADFAC008AE9A8 /* ViewUtilities.swift in Sources */,
+				A53678DD29EB658700BA161F /* MotionToRosbridgeStreamer.swift in Sources */,
+				CE98B9D629E4F1700026C631 /* RosbridgeUtilities.swift in Sources */,
+				A549A42829EAE0E0008AE9A8 /* DeviceMotionTrackerView.swift in Sources */,
 				CE37A68529D57DA300262D9E /* HeadphoneMotionPubApp.swift in Sources */,
+				A549A42C29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift in Sources */,
 				CE528F0129E2A8A3002A2A3F /* WebSocketTaskController.swift in Sources */,
+				A549A42A29EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +307,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HeadphoneMotionPub/Preview Content\"";
-				DEVELOPMENT_TEAM = 6946U6BH66;
+				DEVELOPMENT_TEAM = F5A6X3XWTZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMotionUsageDescription = "";
@@ -298,7 +322,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "yoshito-okada.HeadphoneMotionPub";
+				PRODUCT_BUNDLE_IDENTIFIER = "spacial-vision.HeadphoneMotionPub";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -314,7 +338,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HeadphoneMotionPub/Preview Content\"";
-				DEVELOPMENT_TEAM = 6946U6BH66;
+				DEVELOPMENT_TEAM = F5A6X3XWTZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMotionUsageDescription = "";
@@ -329,7 +353,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "yoshito-okada.HeadphoneMotionPub";
+				PRODUCT_BUNDLE_IDENTIFIER = "spacial-vision.HeadphoneMotionPub";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

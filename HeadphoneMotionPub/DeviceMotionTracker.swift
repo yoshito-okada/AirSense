@@ -5,14 +5,16 @@
 //  Created by Yoshito Okada on 2023/04/12.
 //
 
-import Foundation
 import CoreMotion
+import Foundation
 
-class DeviceMotionTracker {
+// a wrapper of CMMotionManager
+//   - automatically start motion tracking on init, and stop on deinit
+//   - publish state and tracked motion
+class DeviceMotionTracker: ObservableObject {
     
-    // MARK: - Enums, typealiases
+    // MARK: - State definitions
     
-    // fatal errors which may be thrown from initializer
     enum FatalError: LocalizedError {
         case motionNotSupported
         
@@ -24,13 +26,15 @@ class DeviceMotionTracker {
         }
     }
     
-    typealias MotionHandler = (CMDeviceMotion) -> Void
-    typealias ErrorHandler = (Error) -> Void
+    enum State {
+        case normal
+        case fatalError(error: Error)
+    }
     
     // MARK: - Properties
 
-    var motionHandler: MotionHandler?
-    var errorHandler: ErrorHandler?
+    @Published private(set) var state: State = .normal
+    @Published private(set) var motion: CMDeviceMotion?
     
     // MARK: - Private properties
     
@@ -38,19 +42,20 @@ class DeviceMotionTracker {
     
     // MARK: - Initializers
     
-    init() throws {
-        guard motionManager.isDeviceMotionAvailable else {
-            throw FatalError.motionNotSupported
-        }
-        
-        motionManager.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical, to: .main) {
-            [weak self] (maybeMotion, maybeError) in
-            if let motion = maybeMotion {
-                self?.motionHandler?(motion)
+    init() {
+        switch motionManager.isDeviceMotionAvailable {
+        case true:
+            state = .normal
+            // start motion tracking only if no fatal error detected
+            motionManager.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical, to: .main) {
+                [weak weakSelf = self] (maybeMotion, maybeError) in
+                if let self = weakSelf, let motion = maybeMotion {
+                    self.motion = motion
+                }
+                // TODO: handle error
             }
-            if let error = maybeError {
-                self?.errorHandler?(error)
-            }
+        case false:
+            state = .fatalError(error: FatalError.motionNotSupported)
         }
     }
     

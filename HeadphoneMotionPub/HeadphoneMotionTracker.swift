@@ -9,17 +9,17 @@ import CoreMotion
 
 // a wrapper of CMHeadphoneMotionManager
 //   - automatically start motion tracking on init, and stop on deinit
-//   - can change handlers whenever the user wants
-class HeadphoneMotionTracker {
+//   - publish connection state and tracked motion
+class HeadphoneMotionTracker: NSObject, CMHeadphoneMotionManagerDelegate, ObservableObject {
     
-    // MARK: - Enums, typealiases, classes
+    // MARK: - State definitions
     
-    // fatal errors which may be thrown from initializer
     enum FatalError: LocalizedError {
         case motionNotSupported
         case permissionDenied
         case permissionNotDetermined
         case permissionRestricted
+        case permissionUnknown
         
         var errorDescription: String? {
             switch self {
@@ -31,111 +31,73 @@ class HeadphoneMotionTracker {
                 return "Permission to track headphone motion is not determined"
             case .permissionRestricted:
                 return "Permission to track headphone motion is restricted"
+            case .permissionUnknown:
+                return "Permission to track headphone motion is unknown"
             }
         }
     }
     
-    // general lifecycle of a headphone
-    enum State: CustomStringConvertible{
+    enum NormalState {
         case disconnected
         case connected
-        
-        var description: String {
-            switch self {
-            case .disconnected:
-                return "Disconnected"
-            case .connected:
-                return "Connected"
-            }
-        }
     }
-
-    // type of callback for handling state, tracked motion, and tracking error
-    typealias StateHandler = (/* newState: */State, /* reason: */String) -> Void
-    typealias MotionHandler = (CMDeviceMotion) -> Void
-    typealias ErrorHandler = (Error) -> Void
-
-    // a delegate that notifies headphone states
-    class Delegate: NSObject, CMHeadphoneMotionManagerDelegate {
-        private(set) var state: State = .disconnected
-        var stateHandler: StateHandler? {
-            didSet {
-                stateHandler?(state, "StateHandler changed")
-            }
-        }
-        
-        // MARK: - CMHeadphoneMotionManagerDelegate
-        
-        func headphoneMotionManagerDidConnect(_ manager: CMHeadphoneMotionManager) {
-            updateState(newState: .connected, reason: "Headphone connected")
-        }
-        
-        func headphoneMotionManagerDidDisconnect(_ manager: CMHeadphoneMotionManager) {
-            updateState(newState: .disconnected, reason: "Headphone disconnected")
-        }
-        
-        //
-        
-        private func updateState(newState: State, reason: String) {
-            print("[Headphone] \(state) -> \(newState): \(reason)")
-            state = newState
-            stateHandler?(newState, reason)
-        }
+    
+    enum State {
+        case normal(state: NormalState)
+        case fatalError(error: Error)
     }
 
     // MARK: - Properties
     
-    var stateHandler: StateHandler? {
-        get {
-            return delegate.stateHandler
-        }
-        set {
-            delegate.stateHandler = newValue
-        }
-    }
-    var motionHandler: MotionHandler?
-    var errorHandler: ErrorHandler?
-    var state: State {
-        return delegate.state
-    }
+    @Published private(set) var state: State = .normal(state: .disconnected)
+    @Published private(set) var motion: CMDeviceMotion? = nil
     
     // MARK: - Private properties
 
-    private let delegate: Delegate = Delegate()
     private let motionManager: CMHeadphoneMotionManager = CMHeadphoneMotionManager()
     
     // MARK: - Initializers
     
-    init() throws {
-        guard motionManager.isDeviceMotionAvailable else {
-            throw FatalError.motionNotSupported
-        }
-        switch CMHeadphoneMotionManager.authorizationStatus() {
-        case .denied:
-            throw FatalError.permissionDenied
-        case .notDetermined:
-            throw FatalError.permissionNotDetermined
-        case .restricted:
-            throw FatalError.permissionRestricted
-        default:
-            break
-        }
+    override init() {
+        super.init()
         
-        motionManager.delegate = delegate
-        
-        motionManager.startDeviceMotionUpdates(to: .main){
-            [weak self] (maybeMotion, maybeError) in
-            if let motion = maybeMotion {
-                self?.motionHandler?(motion)
+        switch (motionManager.isDeviceMotionAvailable, CMHeadphoneMotionManager.authorizationStatus()) {
+        case (false, _):
+            state = .fatalError(error: FatalError.motionNotSupported)
+        case (_, .denied):
+            state = .fatalError(error: FatalError.permissionDenied)
+        case (_, .notDetermined):
+            state = .fatalError(error: FatalError.permissionRestricted)
+        case (_, .restricted):
+            state = .fatalError(error: FatalError.permissionRestricted)
+        case (true, .authorized):
+            state = .normal(state: .disconnected)
+            // start motion tracking only if no fatal error detected
+            motionManager.delegate = self
+            motionManager.startDeviceMotionUpdates(to: .main) {
+                [weak weakSelf = self] (maybeMotion, maybeError) in
+                if let self = weakSelf, let motion = maybeMotion {
+                    self.motion = motion
+                }
+                // TODO: error handling
             }
-            if let error = maybeError {
-                self?.errorHandler?(error)
-            }
+        @unknown default:
+            state = .fatalError(error: FatalError.permissionUnknown)
         }
     }
     
     deinit {
         motionManager.stopDeviceMotionUpdates()
+    }
+    
+    // MARK: - CMHeadphoneMotionManagerDelegate
+    
+    func headphoneMotionManagerDidConnect(_ manager: CMHeadphoneMotionManager) {
+        state = .normal(state: .connected)
+    }
+    
+    func headphoneMotionManagerDidDisconnect(_ manager: CMHeadphoneMotionManager) {
+        state = .normal(state: .disconnected)
     }
 }
 
