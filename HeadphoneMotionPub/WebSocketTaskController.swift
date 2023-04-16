@@ -150,6 +150,7 @@ class WebSocketTaskController: ObservableObject {
         guard task?.url != newUrl else { return }
         // discard the current task
         task = nil
+        state = .noTask
         stateSyncCancellable = nil
         // start a new task with the given url
         task = WebSocketTask(with: newUrl)
@@ -170,6 +171,7 @@ class WebSocketTaskController: ObservableObject {
             // discard the current disconnected task after remembering the url
             let url = task!.url
             task = nil
+            state = .noTask
             stateSyncCancellable = nil
             // start a new task with the same url
             task = WebSocketTask(with: url)
