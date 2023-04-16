@@ -9,7 +9,7 @@ import CoreMotion
 import Foundation
 import SwiftUI
 
-struct HImageTextView: View {
+struct HImageText: View {
     let image: (systemName: String, color: Color)
     let text: (string: String, color: Color)
     
@@ -23,7 +23,7 @@ struct HImageTextView: View {
     }
 }
 
-struct HTextTextFieldView: View {
+struct HTextTextField: View {
     let text: (string: String, color: Color)
     let textField: (text: Binding<String>, onSubmit: () -> Void)
     
@@ -32,6 +32,23 @@ struct HTextTextFieldView: View {
             Text(text.string)
                 .foregroundColor(text.color)
             TextField(text.string, text: textField.text)
+                .textFieldStyle(.roundedBorder)
+                .onSubmit {
+                    textField.onSubmit()
+                }
+        }
+    }
+}
+
+struct HTextFormattedTextField<F>: View where F: ParseableFormatStyle, F.FormatOutput == String {
+    let text: (string: String, color: Color)
+    let textField: (value: Binding<F.FormatInput>, format: F, onSubmit: () -> Void)
+    
+    var body: some View {
+        HStack {
+            Text(text.string)
+                .foregroundColor(text.color)
+            TextField(text.string, value: textField.value, format: textField.format)
                 .textFieldStyle(.roundedBorder)
                 .onSubmit {
                     textField.onSubmit()

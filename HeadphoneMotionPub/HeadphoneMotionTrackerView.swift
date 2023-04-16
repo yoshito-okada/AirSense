@@ -19,12 +19,11 @@ struct HeadphoneMotionTrackerView: View {
                     .bold()
                 switch model.state {
                 case .normal(.connected):
-                    HImageTextView(image: ("headphones", .green), text: ("Connected", .gray))
+                    HImageText(image: ("headphones", .green), text: ("Connected", .gray))
                 case .normal(.disconnected):
-                    HImageTextView(image: ("headphones", .red), text: ("Disonnected", .gray))
+                    HImageText(image: ("headphones", .red), text: ("Disonnected", .gray))
                 case .fatalError(let error):
-                    HImageTextView(image: ("exclamationmark.triangle.fill", .red),
-                                   text: (error.localizedDescription, .gray))
+                    HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .gray))
                 }
             }
             .padding(.bottom)

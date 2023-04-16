@@ -34,24 +34,20 @@ struct MotionToRosbridgeStreamerView: View {
                 Text("Device Motion")
                     .foregroundColor(.gray)
                 VStack(alignment: .leading) {
-                    HTextTextFieldView(text: ("Topic", .gray),
-                                       textField: ($deviceMotionTopic,
-                                                   { model.deviceMotionTopic = deviceMotionTopic }))
-                    HTextTextFieldView(text: ("Frame ID", .gray),
-                                       textField: ($deviceMotionFrameId,
-                                                   { model.deviceMotionFrameId = deviceMotionFrameId }))
+                    HTextTextField(text: ("Topic", .gray),
+                                   textField: ($deviceMotionTopic, { model.deviceMotionTopic = deviceMotionTopic }))
+                    HTextTextField(text: ("Frame ID", .gray),
+                                   textField: ($deviceMotionFrameId, { model.deviceMotionFrameId = deviceMotionFrameId }))
                 }
                 .padding(.leading)
                 //
                 Text("Headphone Motion")
                     .foregroundColor(.gray)
                 VStack(alignment: .leading) {
-                    HTextTextFieldView(text: ("Topic", .gray),
-                                       textField: ($headphoneMotionTopic,
-                                                   { model.headphoneMotionTopic = headphoneMotionTopic }))
-                    HTextTextFieldView(text: ("Frame ID", .gray),
-                                       textField: ($headphoneMotionFrameId,
-                                                   { model.headphoneMotionFrameId = headphoneMotionFrameId }))
+                    HTextTextField(text: ("Topic", .gray),
+                                   textField: ($headphoneMotionTopic, { model.headphoneMotionTopic = headphoneMotionTopic }))
+                    HTextTextField(text: ("Frame ID", .gray),
+                                   textField: ($headphoneMotionFrameId, { model.headphoneMotionFrameId = headphoneMotionFrameId }))
                 }
                 .padding(.leading)
             }
