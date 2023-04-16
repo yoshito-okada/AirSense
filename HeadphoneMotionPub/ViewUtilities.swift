@@ -65,8 +65,12 @@ struct PreferenceView: View {
     var body: some View {
         Toggle("Keep Screen On", isOn: $keepScreenOn)
             .foregroundColor(.gray)
-            //.tint(.gray)
+            .onAppear() {
+                // reflect the **initial** preference in the system
+                UIApplication.shared.isIdleTimerDisabled = keepScreenOn
+            }
             .onChange(of: keepScreenOn) { _ in
+                // reflect the **changed** preference in the system
                 UIApplication.shared.isIdleTimerDisabled = keepScreenOn
             }
     }
