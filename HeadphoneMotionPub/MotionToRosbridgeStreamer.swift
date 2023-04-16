@@ -13,9 +13,7 @@ class MotionToRosbridgeStreamer: ObservableObject {
     
     // MARK: - Private properties
     
-    private var deviceMotionCancellable: AnyCancellable?
-    private var headphoneMotionCancellable: AnyCancellable?
-    private var webSocketStateCancellable: AnyCancellable?
+    private var cancellables: [AnyCancellable] = []
     
     // MARK: - Properties
     
@@ -23,18 +21,24 @@ class MotionToRosbridgeStreamer: ObservableObject {
     let deviceMotionTracker: DeviceMotionTracker = DeviceMotionTracker()
     let webSocketTaskController: WebSocketTaskController = WebSocketTaskController()
     
-    /*@AppStorage("deviceMotionTopic")*/
-    var deviceMotionTopic: String = "/device_imu"
-    var deviceMotionFrameId: String = "device_imu"
-    var headphoneMotionTopic: String = "/headphone_imu"
-    var headphoneMotionFrameId: String = "headphone_imu"
+    var deviceMotionTopic: String = "" {
+        didSet {
+            sendTopicAdvertiseRequest(topic: deviceMotionTopic)
+        }
+    }
+    var deviceMotionFrameId: String = ""
+    var headphoneMotionTopic: String = "" {
+        didSet {
+            sendTopicAdvertiseRequest(topic: headphoneMotionTopic)
+        }
+    }
+    var headphoneMotionFrameId: String = ""
     
     // MARK: - Initializers
     
     init() {
         // on WebSocket connected to rosbridge server, send topic advertise requests
-        webSocketStateCancellable = webSocketTaskController.$state.sink {
-            [weak weakSelf = self] state in
+        webSocketTaskController.$state.sink { [weak weakSelf = self] state in
             guard let self = weakSelf else { return }
             switch state {
             case .hasTask(taskState: .connected(_)):
@@ -43,23 +47,21 @@ class MotionToRosbridgeStreamer: ObservableObject {
             default:
                 break
             }
-        }
+        }.store(in: &cancellables)
         // on device motion updated, send a motion publish request
-        deviceMotionCancellable = deviceMotionTracker.$motion.sink {
-            [weak weakSelf = self] maybeMotion in
+        deviceMotionTracker.$motion.sink { [weak weakSelf = self] maybeMotion in
             guard let self = weakSelf, let motion = maybeMotion else { return }
             self.sendMotionPublishRequest(topic: self.deviceMotionTopic,
-                                           frameId: self.deviceMotionFrameId,
-                                           motion: motion)
-        }
+                                          frameId: self.deviceMotionFrameId,
+                                          motion: motion)
+        }.store(in: &cancellables)
         // on headphone motion updated, send a motion publish request
-        headphoneMotionCancellable = headphoneMotionTracker.$motion.sink {
-            [weak weakSelf = self] maybeMotion in
+        headphoneMotionTracker.$motion.sink { [weak weakSelf = self] maybeMotion in
             guard let self = weakSelf, let motion = maybeMotion else { return }
             self.sendMotionPublishRequest(topic: self.headphoneMotionTopic,
-                                           frameId: self.headphoneMotionFrameId,
-                                           motion: motion)
-        }
+                                          frameId: self.headphoneMotionFrameId,
+                                          motion: motion)
+        }.store(in: &cancellables)
     }
     
     // MARK: - Private methods

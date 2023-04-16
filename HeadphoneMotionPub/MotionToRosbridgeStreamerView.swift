@@ -9,13 +9,12 @@ import Foundation
 import SwiftUI
 
 struct MotionToRosbridgeStreamerView: View {
-    @ObservedObject var model: MotionToRosbridgeStreamer
+    @AppStorage("deviceMotionTopic") private var deviceMotionTopic = "/device_imu"
+    @AppStorage("deviceMotionFrameId") private var deviceMotionFrameId = "device_imu"
+    @AppStorage("headphoneMotionTopic") private var headphoneMotionTopic = "/headphone_imu"
+    @AppStorage("headphoneMotionFrameId") private var headphoneMotionFrameId = "headphone_imu"
     
-    // TODO: textfields to change topic names and frame ids
-    @AppStorage("deviceMotionTopic") var deviceMotionTopic = "/device_imu"
-    @AppStorage("deviceMotionFrameId") var deviceMotionFrameId = "device_imu"
-    @AppStorage("headphoneMotionTopic") var headphoneMotionTopic = "/headphone_imu"
-    @AppStorage("headphoneMotionFrameId") var headphoneMotionFrameId = "headphone_imu"
+    @ObservedObject var model: MotionToRosbridgeStreamer
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -28,42 +27,34 @@ struct MotionToRosbridgeStreamerView: View {
             WebSocketTaskControllerView(model: model.webSocketTaskController)
                 .padding(.bottom)
             
-            Text("ROS Settings")
-                .bold()
-            //
-            Text("Device Motion")
-                .foregroundColor(.gray)
-            HStack {
-                Text("Topic")
+            VStack(alignment: .leading) {
+                Text("ROS Settings")
+                    .bold()
+                //
+                Text("Device Motion")
                     .foregroundColor(.gray)
-                TextField("Device Motion Topic", text: $deviceMotionTopic)
-                    .textFieldStyle(.roundedBorder)
-            }
-            .padding(.leading)
-            HStack {
-                Text("Frame ID")
+                VStack(alignment: .leading) {
+                    HTextTextFieldView(text: ("Topic", .gray),
+                                       textField: ($deviceMotionTopic,
+                                                   { model.deviceMotionTopic = deviceMotionTopic }))
+                    HTextTextFieldView(text: ("Frame ID", .gray),
+                                       textField: ($deviceMotionFrameId,
+                                                   { model.deviceMotionFrameId = deviceMotionFrameId }))
+                }
+                .padding(.leading)
+                //
+                Text("Headphone Motion")
                     .foregroundColor(.gray)
-                TextField("Device Motion Frame ID", text: $deviceMotionFrameId)
-                    .textFieldStyle(.roundedBorder)
+                VStack(alignment: .leading) {
+                    HTextTextFieldView(text: ("Topic", .gray),
+                                       textField: ($headphoneMotionTopic,
+                                                   { model.headphoneMotionTopic = headphoneMotionTopic }))
+                    HTextTextFieldView(text: ("Frame ID", .gray),
+                                       textField: ($headphoneMotionFrameId,
+                                                   { model.headphoneMotionFrameId = headphoneMotionFrameId }))
+                }
+                .padding(.leading)
             }
-            .padding(.leading)
-            //
-            Text("Headphone Motion")
-                .foregroundColor(.gray)
-            HStack {
-                Text("Topic")
-                    .foregroundColor(.gray)
-                TextField("Headphone Motion Topic", text: $headphoneMotionTopic)
-                    .textFieldStyle(.roundedBorder)
-            }
-            .padding(.leading)
-            HStack {
-                Text("Frame ID")
-                    .foregroundColor(.gray)
-                TextField("Headphone Motion Frame ID", text: $headphoneMotionFrameId)
-                    .textFieldStyle(.roundedBorder)
-            }
-            .padding(.leading)
         }
     }
 }

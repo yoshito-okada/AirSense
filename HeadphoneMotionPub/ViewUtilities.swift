@@ -23,6 +23,23 @@ struct HImageTextView: View {
     }
 }
 
+struct HTextTextFieldView: View {
+    let text: (string: String, color: Color)
+    let textField: (text: Binding<String>, onSubmit: () -> Void)
+    
+    var body: some View {
+        HStack {
+            Text(text.string)
+                .foregroundColor(text.color)
+            TextField(text.string, text: textField.text)
+                .textFieldStyle(.roundedBorder)
+                .onSubmit {
+                    textField.onSubmit()
+                }
+        }
+    }
+}
+
 struct MotionView: View {
     let motion: CMDeviceMotion
     let color: Color
