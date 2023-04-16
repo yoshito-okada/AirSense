@@ -39,14 +39,9 @@ class MotionToRosbridgeStreamer: ObservableObject {
     init() {
         // on WebSocket connected to rosbridge server, send topic advertise requests
         webSocketTaskController.$state.sink { [weak weakSelf = self] state in
-            guard let self = weakSelf else { return }
-            switch state {
-            case .hasTask(taskState: .connected(_)):
-                self.sendTopicAdvertiseRequest(topic: self.deviceMotionTopic)
-                self.sendTopicAdvertiseRequest(topic: self.headphoneMotionTopic)
-            default:
-                break
-            }
+            guard let self = weakSelf, case .hasTask(taskState: .connected(_)) = state else { return }
+            self.sendTopicAdvertiseRequest(topic: self.deviceMotionTopic)
+            self.sendTopicAdvertiseRequest(topic: self.headphoneMotionTopic)
         }.store(in: &cancellables)
         // on device motion updated, send a motion publish request
         deviceMotionTracker.$motion.sink { [weak weakSelf = self] maybeMotion in

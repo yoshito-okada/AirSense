@@ -166,22 +166,18 @@ class WebSocketTaskController: ObservableObject {
     private func resumeTask() {
         // if the current task is in the disconnected state,
         // start a new task with the same url
-        switch task?.state {
-        case .disconnected:
-            // discard the current disconnected task after remembering the url
-            let url = task!.url
-            task = nil
-            state = .noTask
-            stateSyncCancellable = nil
-            // start a new task with the same url
-            task = WebSocketTask(with: url)
-            state = .hasTask(taskState: task!.state)
-            stateSyncCancellable = task!.$state.sink {
-                [weak weakSelf = self] newValue in
-                weakSelf?.state = .hasTask(taskState: newValue)
-            }
-        default:
-            break
+        guard case .disconnected = task?.state else { return }
+        // discard the current disconnected task after remembering the url
+        let url = task!.url
+        task = nil
+        state = .noTask
+        stateSyncCancellable = nil
+        // start a new task with the same url
+        task = WebSocketTask(with: url)
+        state = .hasTask(taskState: task!.state)
+        stateSyncCancellable = task!.$state.sink {
+            [weak weakSelf = self] newValue in
+            weakSelf?.state = .hasTask(taskState: newValue)
         }
     }
 }
