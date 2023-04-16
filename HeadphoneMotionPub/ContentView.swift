@@ -12,7 +12,9 @@ struct ContentView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            MotionToRosbridgeStreamerView(model: model)
+            ScrollView {
+                MotionToRosbridgeStreamerView(model: model)
+            }
             
             Spacer()
             
