@@ -30,15 +30,15 @@ struct WebSocketTaskControllerView: View {
                 HImageTextView(image: ("globe", .gray), text: ("No task", .gray))
             }
             HTextTextFieldView(text: ("URL", .gray),
-                               textField: ($urlString, { changeTask(urlString: urlString) }))
+                               textField: ($urlString, { changeTask(with: urlString) }))
         }
         .onAppear() {
             // initialize the WebSocket task
-            changeTask(urlString: urlString)
+            changeTask(with: urlString)
         }
     }
     
-    private func changeTask(urlString: String) {
+    private func changeTask(with: String) {
         guard let url = WebSocketURL(string: urlString) else { return }
         model.changeTask(with: url)
     }

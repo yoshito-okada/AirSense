@@ -56,5 +56,12 @@ struct MotionToRosbridgeStreamerView: View {
                 .padding(.leading)
             }
         }
+        .onAppear() {
+            // reflect the initial configs in the model
+            model.deviceMotionTopic = deviceMotionTopic
+            model.deviceMotionFrameId = deviceMotionFrameId
+            model.headphoneMotionTopic = headphoneMotionTopic
+            model.headphoneMotionFrameId = headphoneMotionFrameId
+        }
     }
 }
