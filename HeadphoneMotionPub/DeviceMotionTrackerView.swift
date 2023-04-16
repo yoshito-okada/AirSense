@@ -15,6 +15,10 @@ struct DeviceMotionTrackerView: View {
         VStack(alignment: .leading) {
             Text("Device Motion")
                 .bold()
+            if case .fatalError(let error) = model.state {
+                HImageTextView(image: ("exclamationmark.triangle.fill", .red),
+                               text: (error.localizedDescription, .gray))
+            }
             if let motion = model.motion {
                 MotionView(motion: motion, color: .gray)
             }
