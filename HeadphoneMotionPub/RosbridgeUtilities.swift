@@ -28,12 +28,11 @@ struct RosTime: Encodable {
 
 // std_msgs/Header
 struct RosHeader: Encodable {
-    let seq: Int
+    let seq: Int = 0
     let stamp: RosTime
     let frame_id: String
     
-    init(seq: Int = 0, stamp: RosTime = RosTime(), frame_id: String = "") {
-        self.seq = 0
+    init(stamp: RosTime = RosTime(), frame_id: String = "") {
         self.stamp = stamp
         self.frame_id = frame_id
     }
