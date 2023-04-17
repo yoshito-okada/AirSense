@@ -23,9 +23,9 @@ struct DeviceMotionTrackerView: View {
             if let motion = model.motion {
                 MotionView(motion: motion, color: .gray)
             }
-            HTextFormattedTextField(
+            HTextDoubleField(
                 text: ("Update Interval", .gray),
-                textField: ($updateInterval, .number, { model.updateInterval = updateInterval }))
+                textField: ($updateInterval, { model.updateInterval = updateInterval }))
         }
         .onAppear() {
             model.updateInterval = updateInterval

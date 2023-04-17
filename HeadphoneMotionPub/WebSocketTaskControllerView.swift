@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct WebSocketTaskControllerView: View {
-    @AppStorage("webSocketUrlString") private var urlString: String = "ws://192.168.0.1:9090"
+    @AppStorage("webSocketUrl") private var url: URL = URL(string: "ws://192.168.0.1:9090")!
     
     @ObservedObject var model: WebSocketTaskController
     
@@ -29,16 +29,16 @@ struct WebSocketTaskControllerView: View {
             case .noTask:
                 HImageText(image: ("globe", .gray), text: ("No task", .gray))
             }
-            HTextTextField(text: ("URL", .gray), textField: ($urlString, { changeTask(with: urlString) }))
+            HTextUrlField(text: ("URL", .gray), textField: ($url, { changeTask(with: url) }))
         }
         .onAppear() {
             // initialize the WebSocket task
-            changeTask(with: urlString)
+            changeTask(with: url)
         }
     }
     
-    private func changeTask(with: String) {
-        guard let url = WebSocketURL(string: urlString) else { return }
+    private func changeTask(with url: URL) {
+        guard let url = WebSocketURL(value: url) else { return }
         model.changeTask(with: url)
     }
 }

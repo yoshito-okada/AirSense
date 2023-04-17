@@ -10,21 +10,20 @@ import Foundation
 
 // a wrapper around URL that only accepts standardized WebSocket URL
 struct WebSocketURL: Equatable, CustomStringConvertible {
-    let url: URL
+    let value: URL
     
-    init?(string: String) {
-        // parsed as an URL?
-        guard let components = URLComponents(string: string) else { return nil }
-        // has a web socket scheme?
+    init?(value: URL) {
+        // parse input URL into components
+        guard let components = URLComponents(string: value.absoluteString) else { return nil }
+        // check for WebSocket scheme
         guard let scheme = components.scheme, (scheme == "ws" || scheme == "wss") else { return nil }
-        // no invalid charactors?
-        guard let parsedUrl = components.url, parsedUrl.absoluteString == string else { return nil }
-        // accept!
-        url = parsedUrl
+        // ensure input URL comforms to standard by comparing with reconstructed URL
+        guard let url = components.url, url == value else { return nil }
+        self.value = value
     }
     
     var description: String {
-        return url.absoluteString
+        return value.description
     }
 }
 
@@ -62,8 +61,8 @@ class WebSocketTask: NSObject, URLSessionWebSocketDelegate, ObservableObject {
         self.task = nil
         // init the super classes. this makes using "self" possible
         super.init()
-        // init and start task using "self" (we must call resume() to attempt connection)
-        self.task = URLSession(configuration: .default, delegate: self, delegateQueue: .main).webSocketTask(with: url.url)
+        // init and start task using "self" (we must call resume() to start)
+        self.task = URLSession(configuration: .default, delegate: self, delegateQueue: .main).webSocketTask(with: url.value)
         self.task!.resume()
     }
     

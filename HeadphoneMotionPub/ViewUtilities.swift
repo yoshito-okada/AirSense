@@ -40,16 +40,59 @@ struct HTextTextField: View {
     }
 }
 
-struct HTextFormattedTextField<F>: View where F: ParseableFormatStyle, F.FormatOutput == String {
+struct HTextDoubleField: View {
     let text: (string: String, color: Color)
-    let textField: (value: Binding<F.FormatInput>, format: F, onSubmit: () -> Void)
+    let textField: (value: Binding<Double>, onSubmit: () -> Void)
     
     var body: some View {
         HStack {
             Text(text.string)
                 .foregroundColor(text.color)
-            TextField(text.string, value: textField.value, format: textField.format)
+            TextField(text.string, value: textField.value, format: .number)
                 .textFieldStyle(.roundedBorder)
+                .keyboardType(.numbersAndPunctuation)
+                .onSubmit {
+                    textField.onSubmit()
+                }
+        }
+    }
+}
+
+enum UrlParseError: Error {
+    case invalidUrl
+}
+
+struct UrlParseStrategy: ParseStrategy {
+    func parse(_ value: String) throws -> URL {
+        // ensure the input string can be parsed into a valid URL using URLComponents,
+        // which guarantees conformity to the URL standard.
+        guard let url = URLComponents(string: value)?.url else { throw UrlParseError.invalidUrl }
+        return url
+    }
+}
+
+struct UrlFormatStyle: ParseableFormatStyle {
+    var parseStrategy: UrlParseStrategy {
+        return UrlParseStrategy()
+    }
+    
+    func format(_ value: URL) -> String {
+        return value.absoluteString
+    }
+}
+
+struct HTextUrlField: View {
+    let text: (string: String, color: Color)
+    let textField: (value: Binding<URL>, onSubmit: () -> Void)
+    
+    var body: some View {
+        HStack {
+            Text(text.string)
+                .foregroundColor(text.color)
+            TextField(text.string, value: textField.value, format: UrlFormatStyle())
+                .textFieldStyle(.roundedBorder)
+                .keyboardType(.URL)
+                .autocapitalization(.none)
                 .onSubmit {
                     textField.onSubmit()
                 }
