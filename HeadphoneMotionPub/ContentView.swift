@@ -14,13 +14,14 @@ struct ContentView: View {
         VStack(alignment: .leading) {
             ScrollView {
                 MotionToRosbridgeStreamerView(model: model)
+                    .padding()
             }
             
             Spacer()
             
             PreferenceView()
+                .padding()
         }
-        .padding()
     }
 }
 
