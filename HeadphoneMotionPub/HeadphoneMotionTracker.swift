@@ -79,7 +79,6 @@ class HeadphoneMotionTracker: NSObject, CMHeadphoneMotionManagerDelegate, Observ
                 if let self = weakSelf, let motion = maybeMotion {
                     self.motion = motion
                 }
-                // TODO: error handling
             }
         @unknown default:
             state = .fatalError(error: FatalError.permissionUnknown)
@@ -98,6 +97,7 @@ class HeadphoneMotionTracker: NSObject, CMHeadphoneMotionManagerDelegate, Observ
     
     func headphoneMotionManagerDidDisconnect(_ manager: CMHeadphoneMotionManager) {
         state = .normal(state: .disconnected)
+        motion = nil
     }
 }
 
