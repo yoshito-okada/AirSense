@@ -35,6 +35,14 @@ class DeviceMotionTracker: ObservableObject {
 
     @Published private(set) var state: State = .normal
     @Published private(set) var motion: CMDeviceMotion?
+    var updateInterval: TimeInterval {
+        get {
+            return motionManager.deviceMotionUpdateInterval
+        }
+        set {
+            motionManager.deviceMotionUpdateInterval = newValue
+        }
+    }
     
     // MARK: - Private properties
     

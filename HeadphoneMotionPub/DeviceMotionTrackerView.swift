@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 struct DeviceMotionTrackerView: View {
+    @AppStorage("deviceMotionUpdateInterval") private var updateInterval: TimeInterval = 0.05
+    
     @ObservedObject var model: DeviceMotionTracker
     
     var body: some View {
@@ -16,12 +18,17 @@ struct DeviceMotionTrackerView: View {
             Text("Device Motion")
                 .bold()
             if case .fatalError(let error) = model.state {
-                HImageTextView(image: ("exclamationmark.triangle.fill", .red),
-                               text: (error.localizedDescription, .gray))
+                HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .gray))
             }
             if let motion = model.motion {
                 MotionView(motion: motion, color: .gray)
             }
+            HTextFormattedTextField(
+                text: ("Update Interval", .gray),
+                textField: ($updateInterval, .number, { model.updateInterval = updateInterval }))
+        }
+        .onAppear() {
+            model.updateInterval = updateInterval
         }
     }
 }
