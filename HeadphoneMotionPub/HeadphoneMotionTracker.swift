@@ -76,9 +76,7 @@ class HeadphoneMotionTracker: NSObject, CMHeadphoneMotionManagerDelegate, Observ
             motionManager.delegate = self
             motionManager.startDeviceMotionUpdates(to: .main) {
                 [weak weakSelf = self] (maybeMotion, maybeError) in
-                if let self = weakSelf, let motion = maybeMotion {
-                    self.motion = motion
-                }
+                weakSelf?.motion = maybeMotion
             }
         @unknown default:
             state = .fatalError(error: FatalError.permissionUnknown)
