@@ -13,29 +13,18 @@ struct HeadphoneMotionTrackerView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            
-            VStack(alignment: .leading) {
-                Text("Headphone Status")
-                    .bold()
-                switch model.state {
-                case .normal(.connected):
-                    HImageText(image: ("headphones", .green), text: ("Connected", .gray))
-                case .normal(.disconnected):
-                    HImageText(image: ("headphones", .red), text: ("Disonnected", .gray))
-                case .fatalError(let error):
-                    HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .gray))
-                }
+            Text("Headphone Motion")
+                .bold()
+            switch (model.state, model.motion) {
+            case (.normal(.disconnected), _):
+                HImageText(image: ("headphones", .red), text: ("Disconnected", .gray))
+            case (.normal(.connected), .none):
+                HImageText(image: ("headphones", .green), text: ("Connected", .gray))
+            case (.normal(.connected), .some(let motion)):
+                MotionView(motion: motion, color: .gray)
+            case (.fatalError(let error), _):
+                HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .gray))
             }
-            .padding(.bottom)
-            
-            VStack(alignment: .leading) {
-                Text("Headphone Motion")
-                    .bold()
-                if let motion = model.motion {
-                    MotionView(motion: motion, color: .gray)
-                }
-            }
-            
         }
     }
 }
