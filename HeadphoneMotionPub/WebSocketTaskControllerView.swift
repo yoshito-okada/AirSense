@@ -29,7 +29,8 @@ struct WebSocketTaskControllerView: View {
             case .noTask:
                 HImageText(image: ("globe", .gray), text: ("No task", .gray))
             }
-            HTextUrlField(text: ("URL", .gray), textField: ($url, { changeTask(with: url) }))
+            HTextUrlField(text: ("URL ", .gray),
+                          textField: ($url, .primary, Color(UIColor.systemGray6), { changeTask(with: url) }))
         }
         .onAppear() {
             // initialize the WebSocket task

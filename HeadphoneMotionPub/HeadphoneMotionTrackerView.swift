@@ -15,15 +15,16 @@ struct HeadphoneMotionTrackerView: View {
         VStack(alignment: .leading) {
             Text("Headphone Motion")
                 .bold()
+                .foregroundColor(.primary)
             switch (model.state, model.motion) {
             case (.normal(.disconnected), _):
-                HImageText(image: ("headphones", .red), text: ("Disconnected", .gray))
+                HImageText(image: ("headphones", .red), text: ("Disconnected", .secondary))
             case (.normal(.connected), .none):
-                HImageText(image: ("headphones", .green), text: ("Connected", .gray))
+                HImageText(image: ("headphones", .green), text: ("Connected", .secondary))
             case (.normal(.connected), .some(let motion)):
-                MotionView(motion: motion, color: .gray)
+                MotionView(motion: motion, color: .secondary)
             case (.fatalError(let error), _):
-                HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .gray))
+                HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .secondary))
             }
         }
     }

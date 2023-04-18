@@ -25,14 +25,15 @@ struct HImageText: View {
 
 struct HTextTextField: View {
     let text: (string: String, color: Color)
-    let textField: (text: Binding<String>, onSubmit: () -> Void)
+    let textField: (text: Binding<String>, fgcolor: Color, bgcolor: Color, onSubmit: () -> Void)
     
     var body: some View {
         HStack {
             Text(text.string)
                 .foregroundColor(text.color)
             TextField(text.string, text: textField.text)
-                .textFieldStyle(.roundedBorder)
+                .foregroundColor(textField.fgcolor)
+                .background(textField.bgcolor)
                 .onSubmit {
                     textField.onSubmit()
                 }
@@ -42,14 +43,15 @@ struct HTextTextField: View {
 
 struct HTextDoubleField: View {
     let text: (string: String, color: Color)
-    let textField: (value: Binding<Double>, onSubmit: () -> Void)
+    let textField: (value: Binding<Double>, fgcolor: Color, bgcolor: Color, onSubmit: () -> Void)
     
     var body: some View {
         HStack {
             Text(text.string)
                 .foregroundColor(text.color)
             TextField(text.string, value: textField.value, format: .number)
-                .textFieldStyle(.roundedBorder)
+                .foregroundColor(textField.fgcolor)
+                .background(textField.bgcolor)
                 .keyboardType(.numbersAndPunctuation)
                 .onSubmit {
                     textField.onSubmit()
@@ -83,14 +85,15 @@ struct UrlFormatStyle: ParseableFormatStyle {
 
 struct HTextUrlField: View {
     let text: (string: String, color: Color)
-    let textField: (value: Binding<URL>, onSubmit: () -> Void)
+    let textField: (value: Binding<URL>, fgcolor: Color, bgcolor: Color, onSubmit: () -> Void)
     
     var body: some View {
         HStack {
             Text(text.string)
                 .foregroundColor(text.color)
             TextField(text.string, value: textField.value, format: UrlFormatStyle())
-                .textFieldStyle(.roundedBorder)
+                .foregroundColor(textField.fgcolor)
+                .background(textField.bgcolor)
                 .keyboardType(.URL)
                 .autocapitalization(.none)
                 .onSubmit {
@@ -124,7 +127,8 @@ struct PreferenceView: View {
     
     var body: some View {
         Toggle("Keep Screen On", isOn: $keepScreenOn)
-            .foregroundColor(.gray)
+            .foregroundColor(.secondary)
+            .tint(.accentColor)
             .onAppear() {
                 // reflect the **initial** preference in the system
                 UIApplication.shared.isIdleTimerDisabled = keepScreenOn

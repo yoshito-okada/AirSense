@@ -17,17 +17,18 @@ struct DeviceMotionTrackerView: View {
         VStack(alignment: .leading) {
             Text("Device Motion")
                 .bold()
+                .foregroundColor(.primary)
             switch (model.state, model.motion) {
             case (.normal, .none):
                 EmptyView()
             case (.normal, .some(let motion)):
-                MotionView(motion: motion, color: .gray)
+                MotionView(motion: motion, color: .secondary)
             case (.fatalError(let error), _):
-                HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .gray))
+                HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .secondary))
             }
             HTextDoubleField(
-                text: ("Update Interval", .gray),
-                textField: ($updateInterval, { model.updateInterval = updateInterval }))
+                text: ("Update Interval ", .secondary),
+                textField: ($updateInterval, .primary, Color(UIColor.systemGray6), { model.updateInterval = updateInterval }))
         }
         .onAppear() {
             model.updateInterval = updateInterval

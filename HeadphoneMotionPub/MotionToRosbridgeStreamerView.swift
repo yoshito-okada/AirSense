@@ -30,24 +30,29 @@ struct MotionToRosbridgeStreamerView: View {
             VStack(alignment: .leading) {
                 Text("ROS Settings")
                     .bold()
+                    .foregroundColor(.primary)
                 //
                 Text("Device Motion")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
                 VStack(alignment: .leading) {
-                    HTextTextField(text: ("Topic", .gray),
-                                   textField: ($deviceMotionTopic, { model.deviceMotionTopic = deviceMotionTopic }))
-                    HTextTextField(text: ("Frame ID", .gray),
-                                   textField: ($deviceMotionFrameId, { model.deviceMotionFrameId = deviceMotionFrameId }))
+                    HTextTextField(text: ("Topic ", .secondary),
+                                   textField: ($deviceMotionTopic, .primary, Color(UIColor.systemGray6),
+                                               { model.deviceMotionTopic = deviceMotionTopic }))
+                    HTextTextField(text: ("Frame ID ", .secondary),
+                                   textField: ($deviceMotionFrameId, .primary, Color(UIColor.systemGray6),
+                                               { model.deviceMotionFrameId = deviceMotionFrameId }))
                 }
                 .padding(.leading)
                 //
                 Text("Headphone Motion")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
                 VStack(alignment: .leading) {
-                    HTextTextField(text: ("Topic", .gray),
-                                   textField: ($headphoneMotionTopic, { model.headphoneMotionTopic = headphoneMotionTopic }))
-                    HTextTextField(text: ("Frame ID", .gray),
-                                   textField: ($headphoneMotionFrameId, { model.headphoneMotionFrameId = headphoneMotionFrameId }))
+                    HTextTextField(text: ("Topic ", .secondary),
+                                   textField: ($headphoneMotionTopic, .primary, Color(UIColor.systemGray6),
+                                               { model.headphoneMotionTopic = headphoneMotionTopic }))
+                    HTextTextField(text: ("Frame ID ", .secondary),
+                                   textField: ($headphoneMotionFrameId, .primary, Color(UIColor.systemGray6),
+                                               { model.headphoneMotionFrameId = headphoneMotionFrameId }))
                 }
                 .padding(.leading)
             }
