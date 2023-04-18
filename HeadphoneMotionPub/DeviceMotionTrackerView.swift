@@ -17,11 +17,13 @@ struct DeviceMotionTrackerView: View {
         VStack(alignment: .leading) {
             Text("Device Motion")
                 .bold()
-            if case .fatalError(let error) = model.state {
-                HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .gray))
-            }
-            if let motion = model.motion {
+            switch (model.state, model.motion) {
+            case (.normal, .none):
+                EmptyView()
+            case (.normal, .some(let motion)):
                 MotionView(motion: motion, color: .gray)
+            case (.fatalError(let error), _):
+                HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .gray))
             }
             HTextDoubleField(
                 text: ("Update Interval", .gray),
