@@ -33,6 +33,7 @@ class MotionToRosbridgeStreamer: ObservableObject {
         }
     }
     var headphoneMotionFrameId: String = ""
+    var excludeGravity = false
     
     // MARK: - Initializers
     
@@ -69,6 +70,11 @@ class MotionToRosbridgeStreamer: ObservableObject {
     }
     
     private func sendMotionPublishRequest(topic: String, frameId: String, motion: CMDeviceMotion) {
+        let acceleration = (excludeGravity
+                            ? motion.userAcceleration
+                            : CMAcceleration(x: motion.userAcceleration.x + motion.gravity.x,
+                                             y: motion.userAcceleration.y + motion.gravity.y,
+                                             z: motion.userAcceleration.z + motion.gravity.z))
         let publishRequest = RosbridgePublishRequest<RosImu>(
             topic: topic,
             msg: RosImu(
@@ -77,7 +83,7 @@ class MotionToRosbridgeStreamer: ObservableObject {
                     frame_id: frameId),
                 orientation: RosQuaternion(quaternion: motion.attitude.quaternion),
                 angular_velocity: RosVector3(rotationRate: motion.rotationRate),
-                linear_acceleration: RosVector3(acceleration: motion.userAcceleration)))
+                linear_acceleration: RosVector3(acceleration: acceleration)))
         if let encodedRequest = encodeForWebSocket(object: publishRequest) {
             webSocketTaskController.send(encodedRequest)
         }

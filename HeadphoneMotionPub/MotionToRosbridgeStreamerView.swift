@@ -13,6 +13,7 @@ struct MotionToRosbridgeStreamerView: View {
     @AppStorage("deviceMotionFrameId") private var deviceMotionFrameId = "device_imu"
     @AppStorage("headphoneMotionTopic") private var headphoneMotionTopic = "/headphone_imu"
     @AppStorage("headphoneMotionFrameId") private var headphoneMotionFrameId = "headphone_imu"
+    @AppStorage("excludeGravity") private var excludeGravity = false
     
     @ObservedObject var model: MotionToRosbridgeStreamer
     
@@ -55,6 +56,13 @@ struct MotionToRosbridgeStreamerView: View {
                                                { model.headphoneMotionFrameId = headphoneMotionFrameId }))
                 }
                 .padding(.leading)
+                //
+                Toggle("Exclude Gravity", isOn: $excludeGravity)
+                    .foregroundColor(.secondary)
+                    .tint(.accentColor)
+                    .onChange(of: excludeGravity) { _ in
+                        model.excludeGravity = excludeGravity
+                    }
             }
         }
         .onAppear() {
@@ -63,6 +71,7 @@ struct MotionToRosbridgeStreamerView: View {
             model.deviceMotionFrameId = deviceMotionFrameId
             model.headphoneMotionTopic = headphoneMotionTopic
             model.headphoneMotionFrameId = headphoneMotionFrameId
+            model.excludeGravity = excludeGravity
         }
     }
 }
