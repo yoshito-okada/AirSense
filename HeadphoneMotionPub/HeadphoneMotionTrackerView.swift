@@ -18,9 +18,9 @@ struct HeadphoneMotionTrackerView: View {
                 .foregroundColor(.primary)
             switch (model.state, model.motion) {
             case (.normal(.disconnected), _):
-                HImageText(image: ("headphones", .red), text: ("Disconnected", .secondary))
+                HImageText(image: ("airpodspro", .red), text: ("Disconnected", .secondary))
             case (.normal(.connected), .none):
-                HImageText(image: ("headphones", .green), text: ("Connected", .secondary))
+                HImageText(image: ("airpodspro", .green), text: ("Connected", .secondary))
             case (.normal(.connected), .some(let motion)):
                 MotionView(motion: motion, color: .secondary)
             case (.fatalError(let error), _):
