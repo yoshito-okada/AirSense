@@ -2,7 +2,7 @@
 //  MotionToRosbridgeStreamer.swift
 //  HeadphoneMotionPub
 //
-//  Created by SpacialVision on 2023/04/16.
+//  Created by Yoshito Okada on 2023/04/16.
 //
 
 import Combine

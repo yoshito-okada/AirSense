@@ -2,7 +2,7 @@
 //  DeviceMotionTrackerView.swift
 //  HeadphoneMotionPub
 //
-//  Created by SpacialVision on 2023/04/15.
+//  Created by Yoshito Okada on 2023/04/15.
 //
 
 import Foundation
