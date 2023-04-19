@@ -18,28 +18,25 @@ struct WebSocketTaskControllerView: View {
             Text("WebSocket Status")
                 .bold()
             switch model.state {
-            case .hasTask(taskState: .idle):
-                HImageText(image: ("globe", .gray), text: ("Idle", .gray))
-            case .hasTask(taskState: .attemptingConnection(let url)):
-                HImageText(image: ("globe", .yellow), text: ("Connecting to \(url)", .gray))
+            case .hasTask(taskState: .connecting(let url)):
+                HImageText(image: ("globe", .yellow), text: ("Connecting to \(url)", .secondary))
             case .hasTask(taskState: .connected(let url)):
-                HImageText(image: ("globe", .green), text: ("Connected to \(url)", .gray))
-            case .hasTask(taskState: .disconnected):
-                HImageText(image: ("globe", .red), text: ("Disconnected", .gray))
-            case .noTask:
-                HImageText(image: ("globe", .gray), text: ("No task", .gray))
+                HImageText(image: ("globe", .green), text: ("Connected to \(url)", .secondary))
+            case .noTask, .hasTask(taskState: .initialized),
+                    .hasTask(taskState: .disconnected), .hasTask(taskState: .finished):
+                HImageText(image: ("globe", .red), text: ("Disconnected", .secondary))
             }
-            HTextUrlField(text: ("URL ", .gray),
-                          textField: ($url, .primary, Color(UIColor.systemGray6), { changeTask(with: url) }))
+            HTextUrlField(text: ("URL ", .secondary),
+                          textField: ($url, .primary, Color(UIColor.systemGray6), { updateTask(with: url) }))
         }
         .onAppear() {
             // initialize the WebSocket task
-            changeTask(with: url)
+            updateTask(with: url)
         }
     }
     
-    private func changeTask(with url: URL) {
+    private func updateTask(with url: URL) {
         guard let url = WebSocketURL(value: url) else { return }
-        model.changeTask(with: url)
+        model.updateTask(with: url)
     }
 }
