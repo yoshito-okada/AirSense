@@ -46,6 +46,14 @@ class WebSocketTask: NSObject, URLSessionWebSocketDelegate, ObservableObject {
     
     let url: WebSocketURL
     @Published private(set) var state: State
+    var isStopped: Bool {
+        switch state {
+        case .disconnected, .finished:
+            return true
+        default:
+            return false
+        }
+    }
 
     // MARK: - Private properties
     
@@ -152,9 +160,9 @@ class WebSocketTaskController: ObservableObject {
     
     // discard current task if it exists
     func discardTask() {
-        task = nil
-        state = .noTask
         stateSyncCancellable = nil
+        state = .noTask
+        task = nil
     }
     
     // update task with new URL. if different, discard current and start new one.
@@ -167,14 +175,10 @@ class WebSocketTaskController: ObservableObject {
     // if current task stopped, discard and start new with same URL.
     // user does not have to call this as resumeTimer do periodically.
     func resumeTask() {
-        switch task?.state {
-        case .disconnected, .finished:
-            let url = task!.url
-            discardTask()
-            startTask(with: url)
-        default:
-            break
-        }
+        guard let task = task, task.isStopped else { return }
+        let url = task.url
+        discardTask()
+        startTask(with: url)
     }
     
     // send message using current task if it exists
