@@ -14,7 +14,7 @@
 		A549A42A29EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A549A42929EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift */; };
 		A549A42C29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A549A42B29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift */; };
 		CE10C8EE29E6E1A500254C07 /* DeviceMotionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */; };
-		CE37A68529D57DA300262D9E /* HeadphoneMotionPubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */; };
+		CE37A68529D57DA300262D9E /* MotionRosStreamerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE37A68429D57DA300262D9E /* MotionRosStreamerApp.swift */; };
 		CE37A68729D57DA300262D9E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE37A68629D57DA300262D9E /* ContentView.swift */; };
 		CE37A68929D57DA500262D9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE37A68829D57DA500262D9E /* Assets.xcassets */; };
 		CE37A68C29D57DA500262D9E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE37A68B29D57DA500262D9E /* Preview Assets.xcassets */; };
@@ -32,7 +32,7 @@
 		A549A42B29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketTaskControllerView.swift; sourceTree = "<group>"; };
 		CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMotionTracker.swift; sourceTree = "<group>"; };
 		CE37A68129D57DA300262D9E /* MotionRosStreamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotionRosStreamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphoneMotionPubApp.swift; sourceTree = "<group>"; };
+		CE37A68429D57DA300262D9E /* MotionRosStreamerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionRosStreamerApp.swift; sourceTree = "<group>"; };
 		CE37A68629D57DA300262D9E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CE37A68829D57DA500262D9E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE37A68B29D57DA500262D9E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 				CE37A68629D57DA300262D9E /* ContentView.swift */,
 				CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */,
 				A549A42729EAE0E0008AE9A8 /* DeviceMotionTrackerView.swift */,
-				CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */,
+				CE37A68429D57DA300262D9E /* MotionRosStreamerApp.swift */,
 				CEE057C329D5B728002D7585 /* HeadphoneMotionTracker.swift */,
 				A549A42929EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift */,
 				A53678DC29EB658700BA161F /* MotionToRosbridgeStreamer.swift */,
@@ -175,7 +175,7 @@
 				A53678DD29EB658700BA161F /* MotionToRosbridgeStreamer.swift in Sources */,
 				CE98B9D629E4F1700026C631 /* RosbridgeUtilities.swift in Sources */,
 				A549A42829EAE0E0008AE9A8 /* DeviceMotionTrackerView.swift in Sources */,
-				CE37A68529D57DA300262D9E /* HeadphoneMotionPubApp.swift in Sources */,
+				CE37A68529D57DA300262D9E /* MotionRosStreamerApp.swift in Sources */,
 				A549A42C29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift in Sources */,
 				CE528F0129E2A8A3002A2A3F /* WebSocketTaskController.swift in Sources */,
 				A549A42A29EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift in Sources */,
@@ -306,7 +306,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HeadphoneMotionPub/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MotionRosStreamer/Preview Content\"";
 				DEVELOPMENT_TEAM = F5A6X3XWTZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -337,7 +337,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HeadphoneMotionPub/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MotionRosStreamer/Preview Content\"";
 				DEVELOPMENT_TEAM = F5A6X3XWTZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
