@@ -55,7 +55,7 @@
 		CE37A67829D57DA200262D9E = {
 			isa = PBXGroup;
 			children = (
-				CE37A68329D57DA300262D9E /* HeadphoneMotionPub */,
+				CE37A68329D57DA300262D9E /* MotionRosStreamer */,
 				CE37A68229D57DA300262D9E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,7 +68,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE37A68329D57DA300262D9E /* HeadphoneMotionPub */ = {
+		CE37A68329D57DA300262D9E /* MotionRosStreamer */ = {
 			isa = PBXGroup;
 			children = (
 				CE37A68629D57DA300262D9E /* ContentView.swift */,
@@ -86,7 +86,7 @@
 				CE37A68829D57DA500262D9E /* Assets.xcassets */,
 				CE37A68A29D57DA500262D9E /* Preview Content */,
 			);
-			path = HeadphoneMotionPub;
+			path = MotionRosStreamer;
 			sourceTree = "<group>";
 		};
 		CE37A68A29D57DA500262D9E /* Preview Content */ = {
