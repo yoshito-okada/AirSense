@@ -57,9 +57,7 @@ class DeviceMotionTracker: ObservableObject {
             // start motion tracking only if no fatal error detected
             motionManager.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical, to: .main) {
                 [weak weakSelf = self] (maybeMotion, maybeError) in
-                if let self = weakSelf, let motion = maybeMotion {
-                    self.motion = motion
-                }
+                weakSelf?.motion = maybeMotion
                 // TODO: handle error
             }
         case false:
