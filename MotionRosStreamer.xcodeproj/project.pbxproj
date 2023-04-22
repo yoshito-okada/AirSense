@@ -31,7 +31,7 @@
 		A549A42929EAE0F4008AE9A8 /* HeadphoneMotionTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphoneMotionTrackerView.swift; sourceTree = "<group>"; };
 		A549A42B29EAE1CF008AE9A8 /* WebSocketTaskControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketTaskControllerView.swift; sourceTree = "<group>"; };
 		CE10C8ED29E6E1A500254C07 /* DeviceMotionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMotionTracker.swift; sourceTree = "<group>"; };
-		CE37A68129D57DA300262D9E /* HeadphoneMotionPub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeadphoneMotionPub.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE37A68129D57DA300262D9E /* MotionRosStreamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotionRosStreamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE37A68429D57DA300262D9E /* HeadphoneMotionPubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphoneMotionPubApp.swift; sourceTree = "<group>"; };
 		CE37A68629D57DA300262D9E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CE37A68829D57DA500262D9E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -63,7 +63,7 @@
 		CE37A68229D57DA300262D9E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CE37A68129D57DA300262D9E /* HeadphoneMotionPub.app */,
+				CE37A68129D57DA300262D9E /* MotionRosStreamer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -100,9 +100,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CE37A68029D57DA300262D9E /* HeadphoneMotionPub */ = {
+		CE37A68029D57DA300262D9E /* MotionRosStreamer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CE37A68F29D57DA500262D9E /* Build configuration list for PBXNativeTarget "HeadphoneMotionPub" */;
+			buildConfigurationList = CE37A68F29D57DA500262D9E /* Build configuration list for PBXNativeTarget "MotionRosStreamer" */;
 			buildPhases = (
 				CE37A67D29D57DA300262D9E /* Sources */,
 				CE37A67E29D57DA300262D9E /* Frameworks */,
@@ -112,9 +112,9 @@
 			);
 			dependencies = (
 			);
-			name = HeadphoneMotionPub;
+			name = MotionRosStreamer;
 			productName = HeadphoneMotionPub;
-			productReference = CE37A68129D57DA300262D9E /* HeadphoneMotionPub.app */;
+			productReference = CE37A68129D57DA300262D9E /* MotionRosStreamer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -145,7 +145,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CE37A68029D57DA300262D9E /* HeadphoneMotionPub */,
+				CE37A68029D57DA300262D9E /* MotionRosStreamer */,
 			);
 		};
 /* End PBXProject section */
@@ -373,7 +373,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CE37A68F29D57DA500262D9E /* Build configuration list for PBXNativeTarget "HeadphoneMotionPub" */ = {
+		CE37A68F29D57DA500262D9E /* Build configuration list for PBXNativeTarget "MotionRosStreamer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE37A69029D57DA500262D9E /* Debug */,
