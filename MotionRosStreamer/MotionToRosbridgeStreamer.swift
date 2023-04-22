@@ -1,6 +1,6 @@
 //
 //  MotionToRosbridgeStreamer.swift
-//  HeadphoneMotionPub
+//  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/04/16.
 //

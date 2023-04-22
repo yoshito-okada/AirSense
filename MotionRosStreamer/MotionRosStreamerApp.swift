@@ -1,6 +1,6 @@
 //
 //  MotionRosStreamerApp.swift
-//  HeadphoneMotionPub
+//  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/03/30.
 //
