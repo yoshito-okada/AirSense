@@ -19,10 +19,10 @@ struct MotionToRosbridgeStreamerView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            DeviceMotionTrackerView(model: model.deviceMotionTracker)
+            DeviceMotionTrackerView(model: model.deviceMotionTracker, excludeGravity: excludeGravity)
                 .padding(.bottom)
             
-            HeadphoneMotionTrackerView(model: model.headphoneMotionTracker)
+            HeadphoneMotionTrackerView(model: model.headphoneMotionTracker, excludeGravity: excludeGravity)
                 .padding(.bottom)
             
             WebSocketTaskControllerView(model: model.webSocketTaskController)

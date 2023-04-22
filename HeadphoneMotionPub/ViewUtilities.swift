@@ -105,9 +105,15 @@ struct HTextUrlField: View {
 
 struct MotionView: View {
     let motion: CMDeviceMotion
+    let excludeGravity: Bool
     let color: Color
     
     var body: some View {
+        let acceleration = (excludeGravity
+                            ? motion.userAcceleration
+                            : CMAcceleration(x: motion.userAcceleration.x + motion.gravity.x,
+                                             y: motion.userAcceleration.y + motion.gravity.y,
+                                             z: motion.userAcceleration.z + motion.gravity.z))
         VStack(alignment: .leading) {
             Text(String(format: "Eular Angles: (%+.2f, %+.2f, %+.2f)",
                         motion.attitude.roll, motion.attitude.pitch, motion.attitude.yaw))
@@ -116,7 +122,7 @@ struct MotionView: View {
                         motion.rotationRate.x, motion.rotationRate.y, motion.rotationRate.z))
             .foregroundColor(color)
             Text(String(format: "Linear Accelerations: (%+.2f, %+.2f, %+.2f)",
-                        motion.userAcceleration.x, motion.userAcceleration.y, motion.userAcceleration.z))
+                        acceleration.x, acceleration.y, acceleration.z))
             .foregroundColor(color)
         }
     }
