@@ -8,6 +8,7 @@
 import Combine
 import CoreMotion
 import Foundation
+import simd
 
 class MotionToRosbridgeStreamer: ObservableObject {
     
@@ -19,21 +20,28 @@ class MotionToRosbridgeStreamer: ObservableObject {
     
     let deviceMotionTracker: DeviceMotionTracker = DeviceMotionTracker()
     let headphoneMotionTracker: HeadphoneMotionTracker = HeadphoneMotionTracker()
+    let faceTracker: FaceTracker = FaceTracker()
     let webSocketTaskController: WebSocketTaskController = WebSocketTaskController()
     
     var deviceMotionTopic: String = "" {
         didSet {
-            sendTopicAdvertiseRequest(topic: deviceMotionTopic)
+            sendTopicAdvertiseRequest(topic: deviceMotionTopic, type: "sensor_msgs/Imu")
         }
     }
     var deviceMotionFrameId: String = ""
     var headphoneMotionTopic: String = "" {
         didSet {
-            sendTopicAdvertiseRequest(topic: headphoneMotionTopic)
+            sendTopicAdvertiseRequest(topic: headphoneMotionTopic, type: "sensor_msgs/Imu")
         }
     }
     var headphoneMotionFrameId: String = ""
     var excludeGravity = false
+    var facePoseTopic: String = "" {
+        didSet {
+            sendTopicAdvertiseRequest(topic: facePoseTopic, type: "geometry_msgs/PoseStamped")
+        }
+    }
+    var facePoseFrameId: String = ""
     
     // MARK: - Initializers
     
@@ -41,8 +49,9 @@ class MotionToRosbridgeStreamer: ObservableObject {
         // on WebSocket connected to rosbridge server, send topic advertise requests
         webSocketTaskController.$state.sink { [weak weakSelf = self] state in
             guard let self = weakSelf, case .hasTask(taskState: .connected(_)) = state else { return }
-            self.sendTopicAdvertiseRequest(topic: self.deviceMotionTopic)
-            self.sendTopicAdvertiseRequest(topic: self.headphoneMotionTopic)
+            self.sendTopicAdvertiseRequest(topic: self.deviceMotionTopic, type: "sensor_msgs/Imu")
+            self.sendTopicAdvertiseRequest(topic: self.headphoneMotionTopic, type: "sensor_msgs/Imu")
+            self.sendTopicAdvertiseRequest(topic: self.facePoseTopic, type: "geometry_msgs/PoseStamped")
         }.store(in: &cancellables)
         // on device motion updated, send a motion publish request
         deviceMotionTracker.$motion.sink { [weak weakSelf = self] maybeMotion in
@@ -58,12 +67,19 @@ class MotionToRosbridgeStreamer: ObservableObject {
                                           frameId: self.headphoneMotionFrameId,
                                           motion: motion)
         }.store(in: &cancellables)
+        // on face pose updated, send a pose publish request
+        faceTracker.$transform.sink { [weak weakSelf = self] maybeTransform in
+            guard let self = weakSelf, let transform = maybeTransform else { return }
+            self.sendPosePublishRequest(topic: self.facePoseTopic,
+                                        frameId: self.facePoseFrameId,
+                                        pose: transform)
+        }.store(in: &cancellables)
     }
     
     // MARK: - Private methods
     
-    private func sendTopicAdvertiseRequest(topic: String) {
-        let advertiseRequest = RosbridgeAdvertiseRequest(topic: topic, type: "sensor_msgs/Imu")
+    private func sendTopicAdvertiseRequest(topic: String, type: String) {
+        let advertiseRequest = RosbridgeAdvertiseRequest(topic: topic, type: type)
         if let encodedRequest = encodeForWebSocket(object: advertiseRequest) {
             webSocketTaskController.send(encodedRequest)
         }
@@ -84,6 +100,19 @@ class MotionToRosbridgeStreamer: ObservableObject {
                 orientation: RosQuaternion(quaternion: motion.attitude.quaternion),
                 angular_velocity: RosVector3(rotationRate: motion.rotationRate),
                 linear_acceleration: RosVector3(acceleration: acceleration)))
+        if let encodedRequest = encodeForWebSocket(object: publishRequest) {
+            webSocketTaskController.send(encodedRequest)
+        }
+    }
+    
+    private func sendPosePublishRequest(topic: String, frameId: String, pose: simd_float4x4) {
+        let publishRequest = RosbridgePublishRequest<RosPoseStamped>(
+            topic: topic,
+            msg: RosPoseStamped(
+                header: RosHeader(
+                    stamp: RosTime(timeInterval: Date.now.timeIntervalSince1970),
+                    frame_id: frameId),
+                pose: RosPose(pose)))
         if let encodedRequest = encodeForWebSocket(object: publishRequest) {
             webSocketTaskController.send(encodedRequest)
         }

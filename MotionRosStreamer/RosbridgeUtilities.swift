@@ -7,6 +7,7 @@
 
 import CoreMotion
 import Foundation
+import simd
 
 // MARK: - Objects corresponding to ROS messages
 
@@ -58,6 +59,17 @@ struct RosQuaternion: Encodable {
         self.z = quaternion.z
         self.w = quaternion.w
     }
+    
+    init(_ other: simd_quatf) {
+        self.x = Double(other.imag.x)
+        self.y = Double(other.imag.y)
+        self.z = Double(other.imag.z)
+        self.w = Double(other.real)
+    }
+    
+    init(matrix: simd_float3x3) {
+        self.init(simd_quatf(matrix))
+    }
 }
 
 // geometry_msgs/Vector3
@@ -83,6 +95,12 @@ struct RosVector3: Encodable {
         self.y = acceleration.y
         self.z = acceleration.z
     }
+    
+    init(_ other: simd_float3) {
+        self.x = Double(other.x)
+        self.y = Double(other.y)
+        self.z = Double(other.z)
+    }
 }
 
 // sensor_msgs/Imu
@@ -94,6 +112,31 @@ struct RosImu: Encodable {
     let angular_velocity_covariance: [Double] = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     let linear_acceleration: RosVector3
     let linear_acceleration_covariance: [Double] = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+}
+
+// geometry_msgs/Pose
+struct RosPose: Encodable {
+    let position: RosVector3
+    let orientation: RosQuaternion
+    
+    init(position: RosVector3 = RosVector3(), orientation: RosQuaternion = RosQuaternion()) {
+        self.position = position
+        self.orientation = orientation
+    }
+    
+    init(_ matrix: simd_float4x4) {
+        self.position = RosVector3(simd_make_float3(matrix.columns.3))
+        self.orientation = RosQuaternion(
+            matrix: simd_float3x3(columns: (simd_make_float3(matrix.columns.0),
+                                            simd_make_float3(matrix.columns.1),
+                                            simd_make_float3(matrix.columns.2))))
+    }
+}
+
+// geometry_msgs/PoseStamped
+struct RosPoseStamped: Encodable {
+    let header: RosHeader
+    let pose: RosPose
 }
 
 // MARK: - Objects corresponding to rosbridge requests

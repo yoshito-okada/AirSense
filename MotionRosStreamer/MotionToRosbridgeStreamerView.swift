@@ -14,6 +14,8 @@ struct MotionToRosbridgeStreamerView: View {
     @AppStorage("headphoneMotionTopic") private var headphoneMotionTopic = "/headphone_imu"
     @AppStorage("headphoneMotionFrameId") private var headphoneMotionFrameId = "headphone_imu"
     @AppStorage("excludeGravity") private var excludeGravity = false
+    @AppStorage("facePoseTopic") private var facePoseTopic = "/face_pose"
+    @AppStorage("facePoseFrameId") private var facePoseFrameId = "face"
     
     @ObservedObject var model: MotionToRosbridgeStreamer
     
@@ -23,6 +25,9 @@ struct MotionToRosbridgeStreamerView: View {
                 .padding(.bottom)
             
             HeadphoneMotionTrackerView(model: model.headphoneMotionTracker, excludeGravity: excludeGravity)
+                .padding(.bottom)
+            
+            FaceTrackerView(model: model.faceTracker)
                 .padding(.bottom)
             
             WebSocketTaskControllerView(model: model.webSocketTaskController)
@@ -63,6 +68,18 @@ struct MotionToRosbridgeStreamerView: View {
                     .onChange(of: excludeGravity) { _ in
                         model.excludeGravity = excludeGravity
                     }
+                //
+                Text("Face Pose")
+                    .foregroundColor(.secondary)
+                VStack(alignment: .leading) {
+                    HTextTextField(text: ("Topic ", .secondary),
+                                   textField: ($facePoseTopic, .primary, Color(UIColor.systemGray6),
+                                               { model.facePoseTopic = facePoseTopic }))
+                    HTextTextField(text: ("Frame ID ", .secondary),
+                                   textField: ($facePoseFrameId, .primary, Color(UIColor.systemGray6),
+                                               { model.facePoseFrameId = facePoseFrameId }))
+                }
+                .padding(.leading)
             }
         }
         .onAppear() {
@@ -72,6 +89,8 @@ struct MotionToRosbridgeStreamerView: View {
             model.headphoneMotionTopic = headphoneMotionTopic
             model.headphoneMotionFrameId = headphoneMotionFrameId
             model.excludeGravity = excludeGravity
+            model.facePoseTopic = facePoseTopic
+            model.facePoseFrameId = facePoseFrameId
         }
     }
 }

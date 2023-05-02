@@ -7,6 +7,7 @@
 
 import CoreMotion
 import Foundation
+import simd
 import SwiftUI
 
 struct HImageText: View {
@@ -125,6 +126,27 @@ struct MotionView: View {
                         acceleration.x, acceleration.y, acceleration.z))
             .foregroundColor(color)
         }
+    }
+}
+
+struct PoseView: View {
+    let pose: simd_float4x4
+    let color: Color
+    
+    var body: some View {
+        // extract position & orientation from transformation matrix
+        let position = simd_make_float3(pose.columns.3)
+        let orientation = simd_quatf(
+            simd_float3x3(columns: (simd_make_float3(pose.columns.0),
+                                    simd_make_float3(pose.columns.1),
+                                    simd_make_float3(pose.columns.2))))
+        // show extracted properties
+        Text(String(format: "Position: (%+.2f, %+.2f, %+.2f)",
+                    position.x, position.y, position.z))
+        .foregroundColor(color)
+        Text(String(format: "Orientation: (%+.2f; %+.2f, %+.2f, %+.2f)",
+                    orientation.real, orientation.imag.x, orientation.imag.y, orientation.imag.z))
+        .foregroundColor(color)
     }
 }
 
