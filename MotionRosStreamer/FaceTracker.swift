@@ -79,6 +79,16 @@ class FaceTracker: NSObject, ARSessionDelegate, ObservableObject {
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
         guard let faceAnchor = anchors.first(where: { $0 is ARFaceAnchor }) as? ARFaceAnchor else { return }
-        transform = faceAnchor.transform
+        // faceAnchor.transform refers the face object in the AR world displayed in the device screen.
+        // following operation yields the transformation to user's actual face
+        // which locates the mirrored position accross the device screen.
+        var mirrored = faceAnchor.transform
+        mirrored[0, 0] = -mirrored[0, 0]
+        mirrored[0, 1] = -mirrored[0, 1]
+        mirrored[1, 2] = -mirrored[1, 2]
+        mirrored[2, 2] = -mirrored[2, 2]
+        mirrored[3, 2] = -mirrored[3, 2]
+        // update the transformation
+        transform = mirrored
     }
 }
