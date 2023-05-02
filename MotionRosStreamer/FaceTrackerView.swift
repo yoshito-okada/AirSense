@@ -13,14 +13,14 @@ struct FaceTrackerView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Face Pose")
+            Text("Face Transform")
                 .bold()
                 .foregroundColor(.primary)
             switch (model.state, model.transform) {
             case (.normal, .none):
                 EmptyView()
-            case (.normal, .some(let pose)):
-                PoseView(pose: pose, color: .secondary)
+            case (.normal, .some(let transform)):
+                TransformView(transform: transform, color: .secondary)
             case (.fatalError(let error), _):
                 HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .secondary))
             }

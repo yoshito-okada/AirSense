@@ -14,8 +14,7 @@ struct MotionToRosbridgeStreamerView: View {
     @AppStorage("headphoneMotionTopic") private var headphoneMotionTopic = "/headphone_imu"
     @AppStorage("headphoneMotionFrameId") private var headphoneMotionFrameId = "headphone_imu"
     @AppStorage("excludeGravity") private var excludeGravity = false
-    @AppStorage("facePoseTopic") private var facePoseTopic = "/face_pose"
-    @AppStorage("facePoseFrameId") private var facePoseFrameId = "face"
+    @AppStorage("faceTransformTopic") private var faceTransformTopic = "/face_transform"
     
     @ObservedObject var model: MotionToRosbridgeStreamer
     
@@ -69,15 +68,12 @@ struct MotionToRosbridgeStreamerView: View {
                         model.excludeGravity = excludeGravity
                     }
                 //
-                Text("Face Pose")
+                Text("Face Transform")
                     .foregroundColor(.secondary)
                 VStack(alignment: .leading) {
                     HTextTextField(text: ("Topic ", .secondary),
-                                   textField: ($facePoseTopic, .primary, Color(UIColor.systemGray6),
-                                               { model.facePoseTopic = facePoseTopic }))
-                    HTextTextField(text: ("Frame ID ", .secondary),
-                                   textField: ($facePoseFrameId, .primary, Color(UIColor.systemGray6),
-                                               { model.facePoseFrameId = facePoseFrameId }))
+                                   textField: ($faceTransformTopic, .primary, Color(UIColor.systemGray6),
+                                               { model.faceTransformTopic = faceTransformTopic }))
                 }
                 .padding(.leading)
             }
@@ -89,8 +85,7 @@ struct MotionToRosbridgeStreamerView: View {
             model.headphoneMotionTopic = headphoneMotionTopic
             model.headphoneMotionFrameId = headphoneMotionFrameId
             model.excludeGravity = excludeGravity
-            model.facePoseTopic = facePoseTopic
-            model.facePoseFrameId = facePoseFrameId
+            model.faceTransformTopic = faceTransformTopic
         }
     }
 }

@@ -36,12 +36,11 @@ class MotionToRosbridgeStreamer: ObservableObject {
     }
     var headphoneMotionFrameId: String = ""
     var excludeGravity = false
-    var facePoseTopic: String = "" {
+    var faceTransformTopic: String = "" {
         didSet {
-            sendTopicAdvertiseRequest(topic: facePoseTopic, type: "geometry_msgs/PoseStamped")
+            sendTopicAdvertiseRequest(topic: faceTransformTopic, type: "geometry_msgs/Transform")
         }
     }
-    var facePoseFrameId: String = ""
     
     // MARK: - Initializers
     
@@ -51,7 +50,7 @@ class MotionToRosbridgeStreamer: ObservableObject {
             guard let self = weakSelf, case .hasTask(taskState: .connected(_)) = state else { return }
             self.sendTopicAdvertiseRequest(topic: self.deviceMotionTopic, type: "sensor_msgs/Imu")
             self.sendTopicAdvertiseRequest(topic: self.headphoneMotionTopic, type: "sensor_msgs/Imu")
-            self.sendTopicAdvertiseRequest(topic: self.facePoseTopic, type: "geometry_msgs/PoseStamped")
+            self.sendTopicAdvertiseRequest(topic: self.faceTransformTopic, type: "geometry_msgs/Transform")
         }.store(in: &cancellables)
         // on device motion updated, send a motion publish request
         deviceMotionTracker.$motion.sink { [weak weakSelf = self] maybeMotion in
@@ -67,12 +66,11 @@ class MotionToRosbridgeStreamer: ObservableObject {
                                           frameId: self.headphoneMotionFrameId,
                                           motion: motion)
         }.store(in: &cancellables)
-        // on face pose updated, send a pose publish request
+        // on face transform updated, send a transform publish request
         faceTracker.$transform.sink { [weak weakSelf = self] maybeTransform in
             guard let self = weakSelf, let transform = maybeTransform else { return }
-            self.sendPosePublishRequest(topic: self.facePoseTopic,
-                                        frameId: self.facePoseFrameId,
-                                        pose: transform)
+            self.sendTransformPublishRequest(topic: self.faceTransformTopic,
+                                             transform: transform)
         }.store(in: &cancellables)
     }
     
@@ -105,14 +103,10 @@ class MotionToRosbridgeStreamer: ObservableObject {
         }
     }
     
-    private func sendPosePublishRequest(topic: String, frameId: String, pose: simd_float4x4) {
-        let publishRequest = RosbridgePublishRequest<RosPoseStamped>(
+    private func sendTransformPublishRequest(topic: String, transform: simd_float4x4) {
+        let publishRequest = RosbridgePublishRequest<RosTransform>(
             topic: topic,
-            msg: RosPoseStamped(
-                header: RosHeader(
-                    stamp: RosTime(timeInterval: Date.now.timeIntervalSince1970),
-                    frame_id: frameId),
-                pose: RosPose(pose)))
+            msg: RosTransform(transform))
         if let encodedRequest = encodeForWebSocket(object: publishRequest) {
             webSocketTaskController.send(encodedRequest)
         }

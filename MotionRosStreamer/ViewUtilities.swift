@@ -129,23 +129,23 @@ struct MotionView: View {
     }
 }
 
-struct PoseView: View {
-    let pose: simd_float4x4
+struct TransformView: View {
+    let transform: simd_float4x4
     let color: Color
     
     var body: some View {
-        // extract position & orientation from transformation matrix
-        let position = simd_make_float3(pose.columns.3)
-        let orientation = simd_quatf(
-            simd_float3x3(columns: (simd_make_float3(pose.columns.0),
-                                    simd_make_float3(pose.columns.1),
-                                    simd_make_float3(pose.columns.2))))
+        // extract translation & rotation from transformation matrix
+        let translation = simd_make_float3(transform.columns.3)
+        let rotation = simd_quatf(
+            simd_float3x3(columns: (simd_make_float3(transform.columns.0),
+                                    simd_make_float3(transform.columns.1),
+                                    simd_make_float3(transform.columns.2))))
         // show extracted properties
-        Text(String(format: "Position: (%+.2f, %+.2f, %+.2f)",
-                    position.x, position.y, position.z))
+        Text(String(format: "Translation: (%+.2f, %+.2f, %+.2f)",
+                    translation.x, translation.y, translation.z))
         .foregroundColor(color)
-        Text(String(format: "Orientation: (%+.2f; %+.2f, %+.2f, %+.2f)",
-                    orientation.real, orientation.imag.x, orientation.imag.y, orientation.imag.z))
+        Text(String(format: "Rotation: (%+.2f; %+.2f, %+.2f, %+.2f)",
+                    rotation.real, rotation.imag.x, rotation.imag.y, rotation.imag.z))
         .foregroundColor(color)
     }
 }

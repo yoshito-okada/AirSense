@@ -114,29 +114,23 @@ struct RosImu: Encodable {
     let linear_acceleration_covariance: [Double] = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 }
 
-// geometry_msgs/Pose
-struct RosPose: Encodable {
-    let position: RosVector3
-    let orientation: RosQuaternion
+// geometry_msgs/Transform
+struct RosTransform: Encodable {
+    let translation: RosVector3
+    let rotation: RosQuaternion
     
-    init(position: RosVector3 = RosVector3(), orientation: RosQuaternion = RosQuaternion()) {
-        self.position = position
-        self.orientation = orientation
+    init(translation: RosVector3 = RosVector3(), rotation: RosQuaternion = RosQuaternion()) {
+        self.translation = translation
+        self.rotation = rotation
     }
     
     init(_ matrix: simd_float4x4) {
-        self.position = RosVector3(simd_make_float3(matrix.columns.3))
-        self.orientation = RosQuaternion(
+        self.translation = RosVector3(simd_make_float3(matrix.columns.3))
+        self.rotation = RosQuaternion(
             matrix: simd_float3x3(columns: (simd_make_float3(matrix.columns.0),
                                             simd_make_float3(matrix.columns.1),
                                             simd_make_float3(matrix.columns.2))))
     }
-}
-
-// geometry_msgs/PoseStamped
-struct RosPoseStamped: Encodable {
-    let header: RosHeader
-    let pose: RosPose
 }
 
 // MARK: - Objects corresponding to rosbridge requests
