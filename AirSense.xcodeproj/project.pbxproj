@@ -138,7 +138,7 @@
 					};
 				};
 			};
-			buildConfigurationList = CE37A67C29D57DA200262D9E /* Build configuration list for PBXProject "MotionRosStreamer" */;
+			buildConfigurationList = CE37A67C29D57DA200262D9E /* Build configuration list for PBXProject "AirSense" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -374,7 +374,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CE37A67C29D57DA200262D9E /* Build configuration list for PBXProject "MotionRosStreamer" */ = {
+		CE37A67C29D57DA200262D9E /* Build configuration list for PBXProject "AirSense" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE37A68D29D57DA500262D9E /* Debug */,
