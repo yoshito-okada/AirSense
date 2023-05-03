@@ -1,6 +1,6 @@
 //
 //  RosbridgeStreamerView.swift
-//  MotionRosStreamer
+//  AirSense
 //
 //  Created by Yoshito Okada on 2023/04/16.
 //
