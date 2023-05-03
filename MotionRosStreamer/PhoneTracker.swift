@@ -1,5 +1,5 @@
 //
-//  DeviceMotionTracker.swift
+//  PhoneTracker.swift
 //  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/04/12.
@@ -9,18 +9,18 @@ import CoreMotion
 import Foundation
 
 // a wrapper of CMMotionManager
-//   - automatically start motion tracking on init, and stop on deinit
+//   - automatically start self motion tracking on init, and stop on deinit
 //   - publish state and tracked motion
-class DeviceMotionTracker: ObservableObject {
+class PhoneTracker: ObservableObject {
     
     // MARK: - State definitions
     
     enum FatalError: LocalizedError {
-        case motionNotSupported
+        case notSupported
         
         var errorDescription: String? {
             switch self {
-            case .motionNotSupported:
+            case .notSupported:
                 return "Self motion tracking is not supported on this device"
             }
         }
@@ -61,7 +61,7 @@ class DeviceMotionTracker: ObservableObject {
                 // TODO: handle error
             }
         case false:
-            state = .fatalError(error: FatalError.motionNotSupported)
+            state = .fatalError(error: FatalError.notSupported)
         }
     }
     

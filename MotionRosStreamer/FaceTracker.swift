@@ -8,9 +8,9 @@
 import ARKit
 import Foundation
 
-// a wrapper of CMMotionManager
-//   - automatically start motion tracking on init, and stop on deinit
-//   - publish state and tracked motion
+// a wrapper of ARSession with ARFaceTrackingConfiguration
+//   - automatically start face tracking on init, and stop on deinit
+//   - publish state and transform to tracked face
 class FaceTracker: NSObject, ARSessionDelegate, ObservableObject {
     
     // MARK: - State definitions

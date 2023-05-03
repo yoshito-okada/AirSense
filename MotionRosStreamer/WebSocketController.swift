@@ -1,5 +1,5 @@
 //
-//  WebSocketTaskController.swift
+//  WebSocketController.swift
 //  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/04/09.
@@ -111,7 +111,7 @@ class WebSocketTask: NSObject, URLSessionWebSocketDelegate, ObservableObject {
 // a controller of WebSocket task
 //   - owns 1 task at most
 //   - monitors the task and resumes if in the disconnected state
-class WebSocketTaskController: ObservableObject {
+class WebSocketController: ObservableObject {
     
     // MARK: - Enums
     

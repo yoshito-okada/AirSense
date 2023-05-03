@@ -1,5 +1,5 @@
 //
-//  MotionToRosbridgeStreamerView.swift
+//  RosbridgeStreamerView.swift
 //  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/04/16.
@@ -8,28 +8,28 @@
 import Foundation
 import SwiftUI
 
-struct MotionToRosbridgeStreamerView: View {
-    @AppStorage("deviceMotionTopic") private var deviceMotionTopic = "/device_imu"
-    @AppStorage("deviceMotionFrameId") private var deviceMotionFrameId = "device_imu"
+struct RosbridgeStreamerView: View {
+    @AppStorage("phoneMotionTopic") private var phoneMotionTopic = "/phone_imu"
+    @AppStorage("phoneMotionFrameId") private var phoneMotionFrameId = "phone_imu"
     @AppStorage("headphoneMotionTopic") private var headphoneMotionTopic = "/headphone_imu"
     @AppStorage("headphoneMotionFrameId") private var headphoneMotionFrameId = "headphone_imu"
     @AppStorage("excludeGravity") private var excludeGravity = false
     @AppStorage("faceTransformTopic") private var faceTransformTopic = "/face_transform"
     
-    @ObservedObject var model: MotionToRosbridgeStreamer
+    @ObservedObject var model: RosbridgeStreamer
     
     var body: some View {
         VStack(alignment: .leading) {
-            DeviceMotionTrackerView(model: model.deviceMotionTracker, excludeGravity: excludeGravity)
+            PhoneTrackerView(model: model.phoneTracker, excludeGravity: excludeGravity)
                 .padding(.bottom)
             
-            HeadphoneMotionTrackerView(model: model.headphoneMotionTracker, excludeGravity: excludeGravity)
+            HeadphoneTrackerView(model: model.headphoneTracker, excludeGravity: excludeGravity)
                 .padding(.bottom)
             
             FaceTrackerView(model: model.faceTracker)
                 .padding(.bottom)
             
-            WebSocketTaskControllerView(model: model.webSocketTaskController)
+            WebSocketControllerView(model: model.webSocketController)
                 .padding(.bottom)
             
             VStack(alignment: .leading) {
@@ -37,15 +37,15 @@ struct MotionToRosbridgeStreamerView: View {
                     .bold()
                     .foregroundColor(.primary)
                 //
-                Text("Device Motion")
+                Text("Phone Motion")
                     .foregroundColor(.secondary)
                 VStack(alignment: .leading) {
                     HTextTextField(text: ("Topic ", .secondary),
-                                   textField: ($deviceMotionTopic, .primary, Color(UIColor.systemGray6),
-                                               { model.deviceMotionTopic = deviceMotionTopic }))
+                                   textField: ($phoneMotionTopic, .primary, Color(UIColor.systemGray6),
+                                               { model.phoneMotionTopic = phoneMotionTopic }))
                     HTextTextField(text: ("Frame ID ", .secondary),
-                                   textField: ($deviceMotionFrameId, .primary, Color(UIColor.systemGray6),
-                                               { model.deviceMotionFrameId = deviceMotionFrameId }))
+                                   textField: ($phoneMotionFrameId, .primary, Color(UIColor.systemGray6),
+                                               { model.phoneMotionFrameId = phoneMotionFrameId }))
                 }
                 .padding(.leading)
                 //
@@ -80,8 +80,8 @@ struct MotionToRosbridgeStreamerView: View {
         }
         .onAppear() {
             // reflect the initial configs in the model
-            model.deviceMotionTopic = deviceMotionTopic
-            model.deviceMotionFrameId = deviceMotionFrameId
+            model.phoneMotionTopic = phoneMotionTopic
+            model.phoneMotionFrameId = phoneMotionFrameId
             model.headphoneMotionTopic = headphoneMotionTopic
             model.headphoneMotionFrameId = headphoneMotionFrameId
             model.excludeGravity = excludeGravity

@@ -1,5 +1,5 @@
 //
-//  HeadphoneMotionTrackerView.swift
+//  HeadphoneTrackerView.swift
 //  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/04/15.
@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 
-struct HeadphoneMotionTrackerView: View {
-    @ObservedObject var model: HeadphoneMotionTracker
+struct HeadphoneTrackerView: View {
+    @ObservedObject var model: HeadphoneTracker
     let excludeGravity: Bool
     
     var body: some View {

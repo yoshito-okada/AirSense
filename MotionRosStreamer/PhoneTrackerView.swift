@@ -1,5 +1,5 @@
 //
-//  DeviceMotionTrackerView.swift
+//  PhoneTrackerView.swift
 //  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/04/15.
@@ -8,15 +8,15 @@
 import Foundation
 import SwiftUI
 
-struct DeviceMotionTrackerView: View {
-    @AppStorage("deviceMotionUpdateInterval") private var updateInterval: TimeInterval = 0.05
+struct PhoneTrackerView: View {
+    @AppStorage("phoneMotionUpdateInterval") private var updateInterval: TimeInterval = 0.05
     
-    @ObservedObject var model: DeviceMotionTracker
+    @ObservedObject var model: PhoneTracker
     let excludeGravity: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Device Motion")
+            Text("Phone Motion")
                 .bold()
                 .foregroundColor(.primary)
             switch (model.state, model.motion) {

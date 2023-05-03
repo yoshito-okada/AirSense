@@ -1,5 +1,5 @@
 //
-//  HeadphoneMotionTracker.swift
+//  HeadphoneTracker.swift
 //  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/03/30.
@@ -8,14 +8,14 @@
 import CoreMotion
 
 // a wrapper of CMHeadphoneMotionManager
-//   - automatically start motion tracking on init, and stop on deinit
+//   - automatically start headphone motion tracking on init, and stop on deinit
 //   - publish connection state and tracked motion
-class HeadphoneMotionTracker: NSObject, CMHeadphoneMotionManagerDelegate, ObservableObject {
+class HeadphoneTracker: NSObject, CMHeadphoneMotionManagerDelegate, ObservableObject {
     
     // MARK: - State definitions
     
     enum FatalError: LocalizedError {
-        case motionNotSupported
+        case notSupported
         case permissionDenied
         case permissionNotDetermined
         case permissionRestricted
@@ -23,7 +23,7 @@ class HeadphoneMotionTracker: NSObject, CMHeadphoneMotionManagerDelegate, Observ
         
         var errorDescription: String? {
             switch self {
-            case .motionNotSupported:
+            case .notSupported:
                 return "Headphone motion tracking is not supported on this device"
             case .permissionDenied:
                 return "Permission to track headphone motion has been denied"
@@ -63,7 +63,7 @@ class HeadphoneMotionTracker: NSObject, CMHeadphoneMotionManagerDelegate, Observ
         
         switch (motionManager.isDeviceMotionAvailable, CMHeadphoneMotionManager.authorizationStatus()) {
         case (false, _):
-            state = .fatalError(error: FatalError.motionNotSupported)
+            state = .fatalError(error: FatalError.notSupported)
         case (_, .denied):
             state = .fatalError(error: FatalError.permissionDenied)
         case (_, .notDetermined):

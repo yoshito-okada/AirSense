@@ -1,5 +1,5 @@
 //
-//  MotionToRosbridgeStreamer.swift
+//  RosbridgeStreamer.swift
 //  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/04/16.
@@ -10,7 +10,7 @@ import CoreMotion
 import Foundation
 import simd
 
-class MotionToRosbridgeStreamer: ObservableObject {
+class RosbridgeStreamer: ObservableObject {
     
     // MARK: - Private properties
     
@@ -18,17 +18,17 @@ class MotionToRosbridgeStreamer: ObservableObject {
     
     // MARK: - Properties
     
-    let deviceMotionTracker: DeviceMotionTracker = DeviceMotionTracker()
-    let headphoneMotionTracker: HeadphoneMotionTracker = HeadphoneMotionTracker()
+    let phoneTracker: PhoneTracker = PhoneTracker()
+    let headphoneTracker: HeadphoneTracker = HeadphoneTracker()
     let faceTracker: FaceTracker = FaceTracker()
-    let webSocketTaskController: WebSocketTaskController = WebSocketTaskController()
+    let webSocketController: WebSocketController = WebSocketController()
     
-    var deviceMotionTopic: String = "" {
+    var phoneMotionTopic: String = "" {
         didSet {
-            sendTopicAdvertiseRequest(topic: deviceMotionTopic, type: "sensor_msgs/Imu")
+            sendTopicAdvertiseRequest(topic: phoneMotionTopic, type: "sensor_msgs/Imu")
         }
     }
-    var deviceMotionFrameId: String = ""
+    var phoneMotionFrameId: String = ""
     var headphoneMotionTopic: String = "" {
         didSet {
             sendTopicAdvertiseRequest(topic: headphoneMotionTopic, type: "sensor_msgs/Imu")
@@ -46,21 +46,21 @@ class MotionToRosbridgeStreamer: ObservableObject {
     
     init() {
         // on WebSocket connected to rosbridge server, send topic advertise requests
-        webSocketTaskController.$state.sink { [weak weakSelf = self] state in
+        webSocketController.$state.sink { [weak weakSelf = self] state in
             guard let self = weakSelf, case .hasTask(taskState: .connected(_)) = state else { return }
-            self.sendTopicAdvertiseRequest(topic: self.deviceMotionTopic, type: "sensor_msgs/Imu")
+            self.sendTopicAdvertiseRequest(topic: self.phoneMotionTopic, type: "sensor_msgs/Imu")
             self.sendTopicAdvertiseRequest(topic: self.headphoneMotionTopic, type: "sensor_msgs/Imu")
             self.sendTopicAdvertiseRequest(topic: self.faceTransformTopic, type: "geometry_msgs/Transform")
         }.store(in: &cancellables)
         // on device motion updated, send a motion publish request
-        deviceMotionTracker.$motion.sink { [weak weakSelf = self] maybeMotion in
+        phoneTracker.$motion.sink { [weak weakSelf = self] maybeMotion in
             guard let self = weakSelf, let motion = maybeMotion else { return }
-            self.sendMotionPublishRequest(topic: self.deviceMotionTopic,
-                                          frameId: self.deviceMotionFrameId,
+            self.sendMotionPublishRequest(topic: self.phoneMotionTopic,
+                                          frameId: self.phoneMotionFrameId,
                                           motion: motion)
         }.store(in: &cancellables)
         // on headphone motion updated, send a motion publish request
-        headphoneMotionTracker.$motion.sink { [weak weakSelf = self] maybeMotion in
+        headphoneTracker.$motion.sink { [weak weakSelf = self] maybeMotion in
             guard let self = weakSelf, let motion = maybeMotion else { return }
             self.sendMotionPublishRequest(topic: self.headphoneMotionTopic,
                                           frameId: self.headphoneMotionFrameId,
@@ -79,7 +79,7 @@ class MotionToRosbridgeStreamer: ObservableObject {
     private func sendTopicAdvertiseRequest(topic: String, type: String) {
         let advertiseRequest = RosbridgeAdvertiseRequest(topic: topic, type: type)
         if let encodedRequest = encodeForWebSocket(object: advertiseRequest) {
-            webSocketTaskController.send(encodedRequest)
+            webSocketController.send(encodedRequest)
         }
     }
     
@@ -99,7 +99,7 @@ class MotionToRosbridgeStreamer: ObservableObject {
                 angular_velocity: RosVector3(rotationRate: motion.rotationRate),
                 linear_acceleration: RosVector3(acceleration: acceleration)))
         if let encodedRequest = encodeForWebSocket(object: publishRequest) {
-            webSocketTaskController.send(encodedRequest)
+            webSocketController.send(encodedRequest)
         }
     }
     
@@ -108,7 +108,7 @@ class MotionToRosbridgeStreamer: ObservableObject {
             topic: topic,
             msg: RosTransform(transform))
         if let encodedRequest = encodeForWebSocket(object: publishRequest) {
-            webSocketTaskController.send(encodedRequest)
+            webSocketController.send(encodedRequest)
         }
     }
 }

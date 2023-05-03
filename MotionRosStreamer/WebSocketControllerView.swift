@@ -1,5 +1,5 @@
 //
-//  WebSocketTaskControllerView.swift
+//  WebSocketControllerView.swift
 //  MotionRosStreamer
 //
 //  Created by Yoshito Okada on 2023/04/15.
@@ -8,10 +8,10 @@
 import Foundation
 import SwiftUI
 
-struct WebSocketTaskControllerView: View {
+struct WebSocketControllerView: View {
     @AppStorage("webSocketUrl") private var url: URL = URL(string: "ws://192.168.0.1:9090")!
     
-    @ObservedObject var model: WebSocketTaskController
+    @ObservedObject var model: WebSocketController
     
     var body: some View {
         VStack(alignment: .leading) {

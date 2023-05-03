@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var model: MotionToRosbridgeStreamer = MotionToRosbridgeStreamer()
+    @StateObject private var model: RosbridgeStreamer = RosbridgeStreamer()
     
     var body: some View {
         VStack(alignment: .leading) {
             ScrollView {
-                MotionToRosbridgeStreamerView(model: model)
+                RosbridgeStreamerView(model: model)
                     .padding()
             }
             
