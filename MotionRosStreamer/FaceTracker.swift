@@ -52,7 +52,7 @@ class FaceTracker: NSObject, ARSessionDelegate, ObservableObject {
             session.delegate = self
             // select a video format with the highest resolution & lowest fps
             // for the best tracking precision and computational load
-            let videoFormat: ARConfiguration.VideoFormat = ARFaceTrackingConfiguration.supportedVideoFormats
+            let videoFormat = ARFaceTrackingConfiguration.supportedVideoFormats
                 .max{ (formatA, formatB) -> Bool in
                     let resolutionA = formatA.imageResolution.width * formatA.imageResolution.height
                     let resolutionB = formatB.imageResolution.width * formatB.imageResolution.height
@@ -79,15 +79,31 @@ class FaceTracker: NSObject, ARSessionDelegate, ObservableObject {
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
         guard let faceAnchor = anchors.first(where: { $0 is ARFaceAnchor }) as? ARFaceAnchor else { return }
-        // faceAnchor.transform refers the face object in the AR world displayed in the device screen.
+        //
+        //   |     |              the face object frame
+        //   |   --+--> .........   - represented by faceAnchor.transform
+        //   |     |                - the y axis is toward the top of head
+        //   |     v                - the z axis is toward the front of face
+        //   |
+        // --+-----------> xy ... the reference frame
+        //   |                      - screen is on the xy plane
+        //   |     ^                - the z axis is toward the real user
+        //   |     |
+        //   |   <-+-- .......... user's actual face
+        //   |     |
+        //   v z
+        //
+        // faceAnchor.transform refers the face object in the AR world behind the device screen.
+        // if worldAlignment is .camera, the reference frame is the device.
         // following operation yields the transformation to user's actual face
         // which locates the mirrored position accross the device screen.
         var mirrored = faceAnchor.transform
-        mirrored[0, 0] = -mirrored[0, 0]
-        mirrored[0, 1] = -mirrored[0, 1]
-        mirrored[1, 2] = -mirrored[1, 2]
-        mirrored[2, 2] = -mirrored[2, 2]
-        mirrored[3, 2] = -mirrored[3, 2]
+        mirrored[0, 0] = -mirrored[0, 0] // x component of x axis of the actual face frame
+                                         // with respect to the reference frame is flipped
+        mirrored[0, 1] = -mirrored[0, 1] // y of x axis
+        mirrored[1, 2] = -mirrored[1, 2] // z of y axis
+        mirrored[2, 2] = -mirrored[2, 2] // z of z axis
+        mirrored[3, 2] = -mirrored[3, 2] // z of translation
         // update the transformation
         transform = mirrored
     }
