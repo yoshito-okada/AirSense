@@ -107,11 +107,40 @@ struct RosVector3: Encodable {
 struct RosImu: Encodable {
     let header: RosHeader
     let orientation: RosQuaternion
-    let orientation_covariance: [Double] = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    let orientation_covariance: [Double]
     let angular_velocity: RosVector3
-    let angular_velocity_covariance: [Double] = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    let angular_velocity_covariance: [Double]
     let linear_acceleration: RosVector3
-    let linear_acceleration_covariance: [Double] = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    let linear_acceleration_covariance: [Double]
+    
+    init(header: RosHeader = RosHeader(),
+         orientation: RosQuaternion = RosQuaternion(),
+         orientation_covariance: [Double]? = .none,
+         angular_velocity: RosVector3 = RosVector3(),
+         angular_velocity_covariance: [Double]? = .none,
+         linear_acceleration: RosVector3 = RosVector3(),
+         linear_acceleration_covariance: [Double]? = .none) {
+        self.header = header
+        self.orientation = orientation
+        self.orientation_covariance = orientation_covariance ?? [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.angular_velocity = angular_velocity
+        self.angular_velocity_covariance = angular_velocity_covariance ?? [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.linear_acceleration = linear_acceleration
+        self.linear_acceleration_covariance = linear_acceleration_covariance ?? [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    }
+    
+    init(motion: CMDeviceMotion, frameId: String) {
+        self.init(header: RosHeader(stamp: RosTime(timeInterval: motion.timestamp),
+                                    frame_id: frameId),
+                  orientation: RosQuaternion(quaternion: motion.attitude.quaternion),
+                  orientation_covariance: .none,
+                  angular_velocity: RosVector3(rotationRate: motion.rotationRate),
+                  angular_velocity_covariance: .none,
+                  linear_acceleration: RosVector3(x: motion.gravity.x + motion.userAcceleration.x,
+                                                  y: motion.gravity.y + motion.userAcceleration.y,
+                                                  z: motion.gravity.z + motion.userAcceleration.z),
+                  linear_acceleration_covariance: .none)
+    }
 }
 
 // geometry_msgs/Transform

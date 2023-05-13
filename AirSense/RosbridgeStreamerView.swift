@@ -13,17 +13,16 @@ struct RosbridgeStreamerView: View {
     @AppStorage("phoneMotionFrameId") private var phoneMotionFrameId = "phone_imu"
     @AppStorage("headphoneMotionTopic") private var headphoneMotionTopic = "/headphone_imu"
     @AppStorage("headphoneMotionFrameId") private var headphoneMotionFrameId = "headphone_imu"
-    @AppStorage("excludeGravity") private var excludeGravity = false
     @AppStorage("faceTransformTopic") private var faceTransformTopic = "/face_transform"
     
     @ObservedObject var model: RosbridgeStreamer
     
     var body: some View {
         VStack(alignment: .leading) {
-            PhoneTrackerView(model: model.phoneTracker, excludeGravity: excludeGravity)
+            PhoneTrackerView(model: model.phoneTracker)
                 .padding(.bottom)
             
-            HeadphoneTrackerView(model: model.headphoneTracker, excludeGravity: excludeGravity)
+            HeadphoneTrackerView(model: model.headphoneTracker)
                 .padding(.bottom)
             
             FaceTrackerView(model: model.faceTracker)
@@ -61,13 +60,6 @@ struct RosbridgeStreamerView: View {
                 }
                 .padding(.leading)
                 //
-                Toggle("Exclude Gravity", isOn: $excludeGravity)
-                    .foregroundColor(.secondary)
-                    .tint(.accentColor)
-                    .onChange(of: excludeGravity) { _ in
-                        model.excludeGravity = excludeGravity
-                    }
-                //
                 Text("Face Transform")
                     .foregroundColor(.secondary)
                 VStack(alignment: .leading) {
@@ -84,7 +76,6 @@ struct RosbridgeStreamerView: View {
             model.phoneMotionFrameId = phoneMotionFrameId
             model.headphoneMotionTopic = headphoneMotionTopic
             model.headphoneMotionFrameId = headphoneMotionFrameId
-            model.excludeGravity = excludeGravity
             model.faceTransformTopic = faceTransformTopic
         }
     }

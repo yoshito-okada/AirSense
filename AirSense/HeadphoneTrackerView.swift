@@ -10,7 +10,6 @@ import SwiftUI
 
 struct HeadphoneTrackerView: View {
     @ObservedObject var model: HeadphoneTracker
-    let excludeGravity: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -23,7 +22,7 @@ struct HeadphoneTrackerView: View {
             case (.normal(.connected), .none):
                 HImageText(image: ("airpodspro", .green), text: ("Connected", .secondary))
             case (.normal(.connected), .some(let motion)):
-                MotionView(motion: motion, excludeGravity: excludeGravity, color: .secondary)
+                MotionView(motion: motion, color: .secondary)
             case (.fatalError(let error), _):
                 HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .secondary))
             }

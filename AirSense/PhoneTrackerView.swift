@@ -12,7 +12,6 @@ struct PhoneTrackerView: View {
     @AppStorage("phoneMotionUpdateInterval") private var updateInterval: TimeInterval = 0.05
     
     @ObservedObject var model: PhoneTracker
-    let excludeGravity: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -23,7 +22,7 @@ struct PhoneTrackerView: View {
             case (.normal, .none):
                 EmptyView()
             case (.normal, .some(let motion)):
-                MotionView(motion: motion, excludeGravity: excludeGravity, color: .secondary)
+                MotionView(motion: motion, color: .secondary)
             case (.fatalError(let error), _):
                 HImageText(image: ("exclamationmark.triangle.fill", .red), text: (error.localizedDescription, .secondary))
             }
