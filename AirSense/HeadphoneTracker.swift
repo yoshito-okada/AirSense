@@ -64,20 +64,16 @@ class HeadphoneTracker: NSObject, CMHeadphoneMotionManagerDelegate, ObservableOb
         switch (motionManager.isDeviceMotionAvailable, CMHeadphoneMotionManager.authorizationStatus()) {
         case (false, _):
             state = .fatalError(error: FatalError.notSupported)
-        case (_, .denied):
+        case (true, .denied):
             state = .fatalError(error: FatalError.permissionDenied)
-        case (_, .notDetermined):
-            state = .fatalError(error: FatalError.permissionRestricted)
-        case (_, .restricted):
+        case (true, .notDetermined):
+            state = .fatalError(error: FatalError.permissionNotDetermined)
+            startTracking()
+        case (true, .restricted):
             state = .fatalError(error: FatalError.permissionRestricted)
         case (true, .authorized):
             state = .normal(state: .disconnected)
-            // start motion tracking only if no fatal error detected
-            motionManager.delegate = self
-            motionManager.startDeviceMotionUpdates(to: .main) {
-                [weak weakSelf = self] (maybeMotion, maybeError) in
-                weakSelf?.motion = maybeMotion
-            }
+            startTracking()
         @unknown default:
             state = .fatalError(error: FatalError.permissionUnknown)
         }
@@ -85,6 +81,16 @@ class HeadphoneTracker: NSObject, CMHeadphoneMotionManagerDelegate, ObservableOb
     
     deinit {
         motionManager.stopDeviceMotionUpdates()
+    }
+    
+    // MARK: - Private methods
+    
+    private func startTracking() {
+        motionManager.delegate = self
+        motionManager.startDeviceMotionUpdates(to: .main) {
+            [weak weakSelf = self] (maybeMotion, maybeError) in
+            weakSelf?.motion = maybeMotion
+        }
     }
     
     // MARK: - CMHeadphoneMotionManagerDelegate
