@@ -9,10 +9,10 @@ import CoreMotion
 import Foundation
 import simd
 
-// MARK: - Objects corresponding to ROS messages
+// MARK: - Objects corresponding to ROS1 messages
 
 // Time
-struct RosTime: Encodable {
+struct Ros1Time: Encodable {
     let sec: Int
     let usec: Int
     
@@ -23,24 +23,24 @@ struct RosTime: Encodable {
     
     init(timeInterval: TimeInterval) {
         self.sec = Int(timeInterval)
-        self.usec = Int(timeInterval - Double(self.sec)) * 1_000_000_000
+        self.usec = Int(timeInterval - Double(self.sec)) * 1_000_000
     }
 }
 
 // std_msgs/Header
-struct RosHeader: Encodable {
+struct Ros1Header: Encodable {
     let seq: Int = 0
-    let stamp: RosTime
+    let stamp: Ros1Time
     let frame_id: String
     
-    init(stamp: RosTime = RosTime(), frame_id: String = "") {
+    init(stamp: Ros1Time = Ros1Time(), frame_id: String = "") {
         self.stamp = stamp
         self.frame_id = frame_id
     }
 }
 
 // geometry_msgs/Quaternion
-struct RosQuaternion: Encodable {
+struct Ros1Quaternion: Encodable {
     let x: Double
     let y: Double
     let z: Double
@@ -73,7 +73,7 @@ struct RosQuaternion: Encodable {
 }
 
 // geometry_msgs/Vector3
-struct RosVector3: Encodable {
+struct Ros1Vector3: Encodable {
     let x: Double
     let y: Double
     let z: Double
@@ -104,21 +104,21 @@ struct RosVector3: Encodable {
 }
 
 // sensor_msgs/Imu
-struct RosImu: Encodable {
-    let header: RosHeader
-    let orientation: RosQuaternion
+struct Ros1Imu: Encodable {
+    let header: Ros1Header
+    let orientation: Ros1Quaternion
     let orientation_covariance: [Double]
-    let angular_velocity: RosVector3
+    let angular_velocity: Ros1Vector3
     let angular_velocity_covariance: [Double]
-    let linear_acceleration: RosVector3
+    let linear_acceleration: Ros1Vector3
     let linear_acceleration_covariance: [Double]
     
-    init(header: RosHeader = RosHeader(),
-         orientation: RosQuaternion = RosQuaternion(),
+    init(header: Ros1Header = Ros1Header(),
+         orientation: Ros1Quaternion = Ros1Quaternion(),
          orientation_covariance: [Double]? = .none,
-         angular_velocity: RosVector3 = RosVector3(),
+         angular_velocity: Ros1Vector3 = Ros1Vector3(),
          angular_velocity_covariance: [Double]? = .none,
-         linear_acceleration: RosVector3 = RosVector3(),
+         linear_acceleration: Ros1Vector3 = Ros1Vector3(),
          linear_acceleration_covariance: [Double]? = .none) {
         self.header = header
         self.orientation = orientation
@@ -130,13 +130,13 @@ struct RosImu: Encodable {
     }
     
     init(motion: CMDeviceMotion, frameId: String) {
-        self.init(header: RosHeader(stamp: RosTime(timeInterval: motion.timestamp),
+        self.init(header: Ros1Header(stamp: Ros1Time(timeInterval: motion.timestamp),
                                     frame_id: frameId),
-                  orientation: RosQuaternion(quaternion: motion.attitude.quaternion),
+                  orientation: Ros1Quaternion(quaternion: motion.attitude.quaternion),
                   orientation_covariance: .none,
-                  angular_velocity: RosVector3(rotationRate: motion.rotationRate),
+                  angular_velocity: Ros1Vector3(rotationRate: motion.rotationRate),
                   angular_velocity_covariance: .none,
-                  linear_acceleration: RosVector3(x: motion.gravity.x + motion.userAcceleration.x,
+                  linear_acceleration: Ros1Vector3(x: motion.gravity.x + motion.userAcceleration.x,
                                                   y: motion.gravity.y + motion.userAcceleration.y,
                                                   z: motion.gravity.z + motion.userAcceleration.z),
                   linear_acceleration_covariance: .none)
@@ -144,23 +144,101 @@ struct RosImu: Encodable {
 }
 
 // geometry_msgs/Transform
-struct RosTransform: Encodable {
-    let translation: RosVector3
-    let rotation: RosQuaternion
+struct Ros1Transform: Encodable {
+    let translation: Ros1Vector3
+    let rotation: Ros1Quaternion
     
-    init(translation: RosVector3 = RosVector3(), rotation: RosQuaternion = RosQuaternion()) {
+    init(translation: Ros1Vector3 = Ros1Vector3(), rotation: Ros1Quaternion = Ros1Quaternion()) {
         self.translation = translation
         self.rotation = rotation
     }
     
     init(_ matrix: simd_float4x4) {
-        self.translation = RosVector3(simd_make_float3(matrix.columns.3))
-        self.rotation = RosQuaternion(
+        self.translation = Ros1Vector3(simd_make_float3(matrix.columns.3))
+        self.rotation = Ros1Quaternion(
             matrix: simd_float3x3(columns: (simd_make_float3(matrix.columns.0),
                                             simd_make_float3(matrix.columns.1),
                                             simd_make_float3(matrix.columns.2))))
     }
 }
+
+// MARK: - Objects corresponding to ROS2 messages
+
+// Time
+struct Ros2Time: Encodable {
+    let sec: Int
+    let nanosec: Int
+    
+    init(sec: Int = 0, nanosec: Int = 0) {
+        self.sec = sec
+        self.nanosec = nanosec
+    }
+    
+    init(timeInterval: TimeInterval) {
+        self.sec = Int(timeInterval)
+        self.nanosec = Int(timeInterval - Double(self.sec)) * 1_000_000_000
+    }
+}
+
+// std_msgs/Header
+struct Ros2Header: Encodable {
+    let stamp: Ros2Time
+    let frame_id: String
+    
+    init(stamp: Ros2Time = Ros2Time(), frame_id: String = "") {
+        self.stamp = stamp
+        self.frame_id = frame_id
+    }
+}
+
+// geometry_msgs/Quaternion
+typealias Ros2Quaternion = Ros1Quaternion
+
+// geometry_msgs/Vector3
+typealias Ros2Vector3 = Ros1Vector3
+
+// sensor_msgs/Imu
+struct Ros2Imu: Encodable {
+    let header: Ros2Header
+    let orientation: Ros2Quaternion
+    let orientation_covariance: [Double]
+    let angular_velocity: Ros2Vector3
+    let angular_velocity_covariance: [Double]
+    let linear_acceleration: Ros2Vector3
+    let linear_acceleration_covariance: [Double]
+    
+    init(header: Ros2Header = Ros2Header(),
+         orientation: Ros2Quaternion = Ros2Quaternion(),
+         orientation_covariance: [Double]? = .none,
+         angular_velocity: Ros2Vector3 = Ros2Vector3(),
+         angular_velocity_covariance: [Double]? = .none,
+         linear_acceleration: Ros2Vector3 = Ros2Vector3(),
+         linear_acceleration_covariance: [Double]? = .none) {
+        self.header = header
+        self.orientation = orientation
+        self.orientation_covariance = orientation_covariance ?? [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.angular_velocity = angular_velocity
+        self.angular_velocity_covariance = angular_velocity_covariance ?? [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.linear_acceleration = linear_acceleration
+        self.linear_acceleration_covariance = linear_acceleration_covariance ?? [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    }
+    
+    init(motion: CMDeviceMotion, frameId: String) {
+        self.init(header: Ros2Header(stamp: Ros2Time(timeInterval: motion.timestamp),
+                                     frame_id: frameId),
+                  orientation: Ros2Quaternion(quaternion: motion.attitude.quaternion),
+                  orientation_covariance: .none,
+                  angular_velocity: Ros2Vector3(rotationRate: motion.rotationRate),
+                  angular_velocity_covariance: .none,
+                  linear_acceleration: Ros2Vector3(x: motion.gravity.x + motion.userAcceleration.x,
+                                                   y: motion.gravity.y + motion.userAcceleration.y,
+                                                   z: motion.gravity.z + motion.userAcceleration.z),
+                  linear_acceleration_covariance: .none)
+    }
+}
+
+// geometry_msgs/Transform
+typealias Ros2Transform = Ros1Transform
 
 // MARK: - Objects corresponding to rosbridge requests
 

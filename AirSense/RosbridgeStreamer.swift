@@ -23,6 +23,8 @@ class RosbridgeStreamer: ObservableObject {
     let faceTracker: FaceTracker = FaceTracker()
     let webSocketController: WebSocketController = WebSocketController()
     
+    var sendRos2Msgs: Bool = false
+
     var phoneMotionTopic: String = "" {
         didSet {
             sendTopicAdvertiseRequest(topic: phoneMotionTopic, type: "sensor_msgs/Imu")
@@ -81,22 +83,29 @@ class RosbridgeStreamer: ObservableObject {
             webSocketController.send(encodedRequest)
         }
     }
-    
-    private func sendMotionPublishRequest(topic: String, motion: CMDeviceMotion, frameId: String) {
-        let publishRequest = RosbridgePublishRequest<RosImu>(
-            topic: topic,
-            msg: RosImu(motion: motion, frameId: frameId))
+
+    private func sendPublishRequest<Msg: Encodable>(topic: String, msg: Msg) {
+        let publishRequest = RosbridgePublishRequest<Msg>(topic: topic, msg: msg)
         if let encodedRequest = encodeForWebSocket(object: publishRequest) {
             webSocketController.send(encodedRequest)
         }
     }
     
+    private func sendMotionPublishRequest(topic: String, motion: CMDeviceMotion, frameId: String) {
+        switch sendRos2Msgs{
+        case false:
+            sendPublishRequest(topic: topic, msg: Ros1Imu(motion: motion, frameId: frameId))
+        case true:
+            sendPublishRequest(topic: topic, msg: Ros2Imu(motion: motion, frameId: frameId))
+        }
+    }
+    
     private func sendTransformPublishRequest(topic: String, transform: simd_float4x4) {
-        let publishRequest = RosbridgePublishRequest<RosTransform>(
-            topic: topic,
-            msg: RosTransform(transform))
-        if let encodedRequest = encodeForWebSocket(object: publishRequest) {
-            webSocketController.send(encodedRequest)
+        switch sendRos2Msgs{
+        case false:
+            sendPublishRequest(topic: topic, msg: Ros1Transform(transform))
+        case true:
+            sendPublishRequest(topic: topic, msg: Ros2Transform(transform))
         }
     }
 }

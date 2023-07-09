@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct RosbridgeStreamerView: View {
+    @AppStorage("sendRos2Msgs") private var sendRos2Msgs = false
     @AppStorage("phoneMotionTopic") private var phoneMotionTopic = "/phone_imu"
     @AppStorage("phoneMotionFrameId") private var phoneMotionFrameId = "phone_imu"
     @AppStorage("headphoneMotionTopic") private var headphoneMotionTopic = "/headphone_imu"
@@ -35,6 +36,13 @@ struct RosbridgeStreamerView: View {
                 Text("ROS Settings")
                     .bold()
                     .foregroundColor(.primary)
+                //
+                Toggle("Send ROS2 Messages", isOn: $sendRos2Msgs)
+                    .foregroundColor(.secondary)
+                    .tint(.accentColor)
+                    .onChange(of: sendRos2Msgs) { _ in
+                        model.sendRos2Msgs = sendRos2Msgs
+                    }
                 //
                 Text("Phone Motion")
                     .foregroundColor(.secondary)
@@ -72,6 +80,7 @@ struct RosbridgeStreamerView: View {
         }
         .onAppear() {
             // reflect the initial configs in the model
+            model.sendRos2Msgs = sendRos2Msgs
             model.phoneMotionTopic = phoneMotionTopic
             model.phoneMotionFrameId = phoneMotionFrameId
             model.headphoneMotionTopic = headphoneMotionTopic
